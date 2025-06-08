@@ -14,9 +14,17 @@ dependencyResolutionManagement {
     }
 }
 
+fun includeModule(name: String) {
+    include(":$name")
+    project(":$name").projectDir = file("sources/$name")
+}
+
 rootProject.name = "KMPapp"
+
+includeBuild("build-logic")
 include(":androidApp")
-include(":shared")
-include(":core")
-include(":network")
-include(":api")
+
+includeModule("shared")
+includeModule("core")
+includeModule("network")
+includeModule("api")

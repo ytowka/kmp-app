@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.ksp)
+    id("shared-koin")
 }
 
 android {
@@ -43,9 +43,6 @@ kotlin {
     }
 
     sourceSets {
-        commonMain {
-            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-        }
         commonMain.dependencies {
             api(project(":core"))
             api(project(":network"))
@@ -85,15 +82,5 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
-    }
-}
-
-dependencies {
-    add("kspCommonMainMetadata", libs.koin.compiler)
-}
-
-tasks.withType<KotlinCompile>().configureEach {
-    if (name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
     }
 }

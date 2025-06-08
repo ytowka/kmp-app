@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.ksp)
+    id("shared-koin")
 }
 
 kotlin {
@@ -52,7 +53,6 @@ kotlin {
 // See: https://kotlinlang.org/docs/multiplatform-hierarchy.html
     sourceSets {
         commonMain {
-            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
             dependencies {
                 api(project(":api"))
 
@@ -85,16 +85,5 @@ kotlin {
             }
         }
 
-    }
-}
-
-dependencies {
-    add("kspCommonMainMetadata", libs.koin.compiler)
-}
-
-
-tasks.withType<KotlinCompile>().configureEach {
-    if (name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
     }
 }

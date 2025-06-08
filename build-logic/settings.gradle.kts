@@ -1,4 +1,4 @@
-rootProject.name = "build-src"
+rootProject.name = "build-logic"
 
 pluginManagement {
     repositories {
