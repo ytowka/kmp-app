@@ -1,10 +1,6 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
-    alias(libs.plugins.ksp)
     id("shared-koin")
 }
 
@@ -58,8 +54,6 @@ kotlin {
 
                 implementation(libs.bundles.ktorClientCommon)
                 implementation(libs.kotlin.stdlib)
-                api(libs.koin.core)
-                api(libs.koin.annotations)
                 // Add KMP dependencies here
             }
         }
@@ -78,12 +72,5 @@ kotlin {
                 implementation(libs.ktor.client.ios)
             }
         }
-
-        commonTest {
-            dependencies {
-                implementation(libs.kotlin.test)
-            }
-        }
-
     }
 }

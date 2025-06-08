@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.ksp)
     id("shared-koin")
 }
 
@@ -46,6 +45,7 @@ kotlin {
         commonMain.dependencies {
             api(project(":core"))
             api(project(":network"))
+            api(project(":data"))
 
             implementation(libs.kotlinx.serialization.core)
             implementation(libs.kotlinx.serialization.json)
@@ -56,8 +56,6 @@ kotlin {
 
             implementation(libs.jwt.parser)
 
-            api(libs.koin.core)
-            api(libs.koin.annotations)
             implementation(libs.androidx.lifecycle.viewmodel)
         }
         androidMain.dependencies {
