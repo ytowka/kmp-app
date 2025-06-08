@@ -1,7 +1,7 @@
 package com.example.network
 
-
-
+import com.example.network.auth.AuthPluginConfig
+import com.example.network.auth.authPlugin
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -16,9 +16,10 @@ import org.koin.core.annotation.Single
 class NetworkModule {
 
     @Single
-    fun httpClient(): HttpClient {
+    fun httpClient(
+        authPluginConfig: AuthPluginConfig
+    ): HttpClient {
         return HttpClient {
-
             defaultRequest {
                 url(baseUrl)
                 contentType(ContentType.Application.Json)
@@ -26,6 +27,9 @@ class NetworkModule {
             install(ContentNegotiation){
                 json()
             }
+            install(authPlugin {
+               authPluginConfig
+            })
             install(Logging)
         }
     }

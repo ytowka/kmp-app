@@ -7,11 +7,6 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.utils.io.InternalAPI
 
-class AuthPluginConfig {
-    lateinit var authTokenProvider: IAuthTokenProvider
-    lateinit var logoutUseCase: ILogoutUseCase
-}
-
 const val AUTH_PLUGIN = "AuthPlugin"
 
 @OptIn(InternalAPI::class)
