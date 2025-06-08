@@ -17,3 +17,6 @@ dependencyResolutionManagement {
 rootProject.name = "KMPapp"
 include(":androidApp")
 include(":shared")
+include(":core")
+include(":network")
+include(":api")
