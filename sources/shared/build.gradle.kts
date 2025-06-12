@@ -46,6 +46,7 @@ kotlin {
             api(project(":core"))
             api(project(":network"))
             api(project(":data"))
+            api(project(":feature"))
 
             implementation(libs.kotlinx.serialization.core)
             implementation(libs.kotlinx.serialization.json)
@@ -72,7 +73,6 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel.compose)
 
             implementation(libs.coil)
-            implementation(libs.coilCompose)
         }
         iosMain.dependencies {
 

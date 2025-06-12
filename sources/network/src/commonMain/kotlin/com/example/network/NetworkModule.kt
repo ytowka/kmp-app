@@ -49,6 +49,12 @@ class NetworkModule {
         }
     }
 
+    @Single
+    @Named("baseUrl")
+    fun provideBaseUrl(): String {
+        return baseUrl
+    }
+
     companion object {
         //const val baseUrl = "http://192.168.110.49:8080" // hotspot
         //const val baseUrl = "http://192.168.0.178:8080" // home

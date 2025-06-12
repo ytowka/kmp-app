@@ -1,0 +1,67 @@
+plugins {
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
+    id("shared-koin")
+}
+
+kotlin {
+
+    androidLibrary {
+        namespace = "com.example.feature"
+        compileSdk = 35
+        minSdk = 26
+    }
+
+    val xcfName = "featureKit"
+
+    iosX64 {
+        binaries.framework {
+            baseName = xcfName
+        }
+    }
+
+    iosArm64 {
+        binaries.framework {
+            baseName = xcfName
+        }
+    }
+
+    iosSimulatorArm64 {
+        binaries.framework {
+            baseName = xcfName
+        }
+    }
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(project(":core"))
+                implementation(project(":api"))
+                implementation(project(":network"))
+
+                implementation(libs.kotlin.stdlib)
+                implementation(libs.androidx.datastore.preferences)
+                implementation(libs.androidx.lifecycle.viewmodel)
+                implementation(libs.koin)
+            }
+        }
+        androidMain {
+            dependencies {
+            }
+        }
+
+        iosMain {
+            dependencies {
+
+            }
+        }
+
+        commonTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+            }
+        }
+
+    }
+
+}

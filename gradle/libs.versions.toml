@@ -18,6 +18,7 @@ koin = "4.0.4" # https://github.com/InsertKoinIO/koin
 koin-annotations = "2.0.0" # https://github.com/InsertKoinIO/koin
 buildKonfig = "0.17.1" # https://github.com/yshrsmz/BuildKonfig
 ksp = "2.1.20-2.0.1"
+navigation = "2.9.0"
 
 # androidx https://developer.android.com/jetpack/androidx/versions
 androidx-lifecycle = "2.9.0-rc01"
@@ -90,7 +91,7 @@ ktor-client-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" 
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" } # android
 okhttp3-logging-interceptor = "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14" # android
 
-coilCompose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coilSvg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }
 coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 
@@ -99,6 +100,8 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-annotations" }
 koin-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-annotations" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin"}
+navigation-compose = { group = "androidx.navigation", name ="navigation-compose", version.ref = "navigation"}
 koin-compose-vm = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 
