@@ -1,8 +1,12 @@
+import com.google.devtools.ksp.gradle.KspAATask
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.kotlinSerialization)
-    id("shared-koin")
+    alias(libs.plugins.ksp)
+    //id("shared-koin")
 }
 
 kotlin {
@@ -35,10 +39,14 @@ kotlin {
 
     sourceSets {
         commonMain {
+            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
             dependencies {
                 implementation(project(":core"))
                 implementation(project(":api"))
                 implementation(project(":network"))
+
+                implementation(libs.koin.core)
+                implementation(libs.koin.annotations)
 
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.androidx.datastore.preferences)
@@ -49,6 +57,7 @@ kotlin {
             }
         }
         androidMain {
+            kotlin.srcDir("build/generated/ksp/android/androidMain/kotlin")
             dependencies {
             }
         }
@@ -66,9 +75,41 @@ kotlin {
         }
 
     }
-
 }
 
-ksp {
-    arg("KOIN_DEFAULT_MODULE","false")
+dependencies {
+    configurations.forEach {
+        if(it.name.contains("ksp")) {
+            add(it.name, libs.koin.compiler)
+        }
+    }
+}
+
+/*dependencies {
+    listOf(
+        "kspCommonMainMetadata",
+        //"kspAndroid",
+        //"kspIosArm64",
+        //"kspIosX64",
+        // "kspIosSimulatorArm64",
+    ).forEach { config ->
+        add(config, libs.koin.compiler)
+    }
+}*/
+
+tasks.withType<KotlinCompilationTask<*>>().configureEach {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
+tasks.withType<KspAATask>().configureEach {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
+
+gradle.taskGraph.whenReady {
+    tasks.forEach { task ->
+        println("${task.name} -> ${task::class.qualifiedName}")
+    }
 }

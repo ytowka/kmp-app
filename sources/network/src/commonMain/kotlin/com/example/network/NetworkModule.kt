@@ -8,11 +8,13 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 
 @Module
+@ComponentScan(value = ["com.example.network"])
 class NetworkModule {
 
     @Single

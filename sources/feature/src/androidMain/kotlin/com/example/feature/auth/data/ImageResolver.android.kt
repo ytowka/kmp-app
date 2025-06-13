@@ -8,7 +8,6 @@ actual class ImageResolver(
     val contentResolver: ContentResolver
 ) {
 
-
     actual fun resolveImage(uri: String): ImageResolverResult? {
         val avatarUri = Uri.parse(uri)
         val name = contentResolver.query(avatarUri, null, null, null, null, null)?.use {

@@ -26,7 +26,7 @@ import coil3.compose.AsyncImage
 import com.example.feature.auth.ui.RegisterFormCallback
 import com.example.feature.auth.ui.RegisterState
 import com.example.kmpapp.android.R
-
+import androidx.core.net.toUri
 
 @Composable
 fun RegisterForm(
@@ -42,7 +42,7 @@ fun RegisterForm(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 10.dp),
-                selectedImage = Uri.parse(registerState.imageUrl),
+                selectedImage = registerState.imageUrl?.toUri(),
                 onImagePicked = callback::onImagePicked,
             )
             OutlinedTextField(

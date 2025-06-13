@@ -1,4 +1,6 @@
+import com.google.devtools.ksp.gradle.KspTask
 import org.gradle.kotlin.dsl.dependencies
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -18,19 +20,16 @@ kotlin {
     }
 }
 
+
+dependencies {
+    add("kspCommonMainMetadata", libs.findLibrary("koin.compiler").get())
+}
+
 ksp {
     arg("KOIN_DEFAULT_MODULE","false")
 }
 
-dependencies {
-    add("kspCommonMainMetadata", libs.findLibrary("koin.compiler").get())
-    //add("kspAndroid", libs.findLibrary("koin.compiler").get())
-    // add("kspIosMainMetadata", libs.findLibrary("koin.compiler").get())
-}
-
-
-tasks.withType<KotlinCompile>().configureEach {
-    println("task $name")
+tasks.withType<KotlinCompilationTask<*>>().configureEach {
     if (name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
     }
