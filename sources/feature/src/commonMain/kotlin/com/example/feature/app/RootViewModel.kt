@@ -6,8 +6,9 @@ import com.example.feature.users.domain.usecase.GetMeUseCase
 import com.example.feature.auth.domain.usecase.IsLoggedInUseCase
 import kotlinx.coroutines.flow.*
 import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Factory
 
-@KoinViewModel
+@Factory
 class RootViewModel(
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val getMeUseCase: GetMeUseCase

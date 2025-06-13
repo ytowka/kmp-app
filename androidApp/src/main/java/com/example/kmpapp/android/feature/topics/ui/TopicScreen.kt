@@ -22,10 +22,11 @@ import com.example.kmpapp.android.coreui.TopBar
 import com.example.kmpapp.android.feature.content.ui.RecomendedContentList
 import org.koin.androidx.compose.koinViewModel
 import com.example.kmpapp.android.R
+import com.example.kmpapp.android.coreui.injectViewModel
 
 @Composable
 fun TopicScreen(
-    topicsViewModel: TopicViewModel = koinViewModel(),
+    topicsViewModel: TopicViewModel= injectViewModel(),
     onTopicClick: (TopicModel) -> Unit,
     onContentClick: (ContentModel) -> Unit,
 ) {

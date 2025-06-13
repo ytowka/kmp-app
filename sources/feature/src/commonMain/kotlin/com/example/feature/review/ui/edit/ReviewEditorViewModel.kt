@@ -14,9 +14,10 @@ import com.example.feature.users.domain.usecase.GetMeUseCase
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Factory
 import kotlin.uuid.ExperimentalUuidApi
 
-@KoinViewModel
+@Factory
 class ReviewEditorViewModel(
     val editReviewUseCase: EditReviewUseCase,
     val writeReviewUseCase: WriteReviewUseCase,

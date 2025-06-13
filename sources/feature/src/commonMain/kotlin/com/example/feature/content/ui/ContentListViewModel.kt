@@ -8,9 +8,9 @@ import com.example.feature.content.domain.usecase.GetAllContentUseCase
 import com.example.feature.content.domain.usecase.SearchContentUseCase
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Factory
 
-@KoinViewModel
+@Factory
 class ContentListViewModel(
     private val getAllContentUseCase: GetAllContentUseCase,
     private val searchContentUseCase: SearchContentUseCase,

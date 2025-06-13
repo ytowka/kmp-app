@@ -15,11 +15,12 @@ import com.example.feature.auth.ui.AuthViewModel
 import com.example.feature.auth.ui.Form
 import kotlinx.coroutines.flow.first
 import org.koin.androidx.compose.koinViewModel
+import com.example.kmpapp.android.coreui.injectViewModel
 
 
 @Composable
 fun AuthScreen(
-    viewModel: AuthViewModel = koinViewModel(),
+    viewModel: AuthViewModel= injectViewModel(),
     onLoginSuccess: () -> Unit,
 ){
     val state by viewModel.uiState.collectAsState()

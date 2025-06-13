@@ -13,11 +13,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Factory
 import kotlin.uuid.ExperimentalUuidApi
 
 @OptIn(ExperimentalUuidApi::class)
-@KoinViewModel
+@Factory
 class EditUserViewModel(
     private val getUserByIdUseCase: GetUserByIdUseCase,
     private val updateUserUseCase: UpdateUserUseCase,

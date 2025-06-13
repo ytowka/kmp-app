@@ -6,7 +6,7 @@ composeBom = "2025.04.01"
 compose-material3 = "1.3.2"
 
 # multiplatform
-kotlin = "2.1.20"
+kotlin = "2.1.21"
 coroutines = "1.10.2" # https://github.com/Kotlin/kotlinx.coroutines
 serialization = "1.8.1" # https://github.com/Kotlin/kotlinx.serialization
 immutable = "0.3.8" # https://github.com/Kotlin/kotlinx.collections.immutable
@@ -17,7 +17,7 @@ ktor = "3.1.2" # https://github.com/ktorio/ktor
 koin = "4.0.4" # https://github.com/InsertKoinIO/koin
 koin-annotations = "2.0.0" # https://github.com/InsertKoinIO/koin
 buildKonfig = "0.17.1" # https://github.com/yshrsmz/BuildKonfig
-ksp = "2.1.20-2.0.1"
+ksp = "2.1.21-2.0.1"
 navigation = "2.9.0"
 
 # androidx https://developer.android.com/jetpack/androidx/versions
@@ -39,7 +39,7 @@ crashlytics = "3.0.3"
 
 # testing
 mockk = "1.14.0"
-kotlinStdlib = "2.1.20"
+kotlinStdlib = "2.1.21"
 runner = "1.6.2"
 core = "1.6.1"
 junit = "1.2.1" # https://github.com/mockk/mockk

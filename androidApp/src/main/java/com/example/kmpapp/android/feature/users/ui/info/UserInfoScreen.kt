@@ -35,10 +35,11 @@ import com.example.kmpapp.android.coreui.rememberPageableListState
 import com.example.kmpapp.android.feature.review.ui.list.MarkBadge
 import org.koin.androidx.compose.koinViewModel
 import com.example.kmpapp.android.R
+import com.example.kmpapp.android.coreui.injectViewModel
 
 @Composable
 fun UserInfoScreen(
-    viewModel: UserInfoViewModel = koinViewModel(),
+    viewModel: UserInfoViewModel= injectViewModel(),
     onBack: () -> Unit,
     onContentClick: (ReviewCard) -> Unit,
     onReviewClick: (ReviewCard) -> Unit,

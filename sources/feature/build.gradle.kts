@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.kotlinSerialization)
     id("shared-koin")
 }
 
@@ -42,7 +43,9 @@ kotlin {
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.androidx.datastore.preferences)
                 implementation(libs.androidx.lifecycle.viewmodel)
-                implementation(libs.koin)
+                implementation(libs.kotlinx.serialization.core)
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.bundles.ktorClientCommon)
             }
         }
         androidMain {
@@ -64,4 +67,8 @@ kotlin {
 
     }
 
+}
+
+ksp {
+    arg("KOIN_DEFAULT_MODULE","false")
 }

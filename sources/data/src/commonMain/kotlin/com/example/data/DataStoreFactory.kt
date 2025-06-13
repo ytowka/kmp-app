@@ -7,11 +7,6 @@ import okio.Path.Companion.toPath
 
 internal const val dataStoreFileName = "dice.preferences_pb"
 
-expect class DataStoreFactory {
-
-    fun getDatastore(): DataStore<Preferences>
-}
-
 fun createDataStore(producePath: () -> String): DataStore<Preferences> =
     PreferenceDataStoreFactory.createWithPath(
         produceFile = { producePath().toPath() }

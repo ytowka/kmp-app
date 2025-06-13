@@ -10,8 +10,9 @@ import com.example.feature.users.ui.toUserModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Factory
 
-@KoinViewModel
+@Factory
 class UserListViewModel(
     private val getUserListUseCase: GetUserListUseCase,
     private val searchUserUseCase: SearchUserUseCase

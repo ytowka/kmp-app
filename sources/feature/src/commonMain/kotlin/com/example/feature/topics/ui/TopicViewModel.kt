@@ -7,8 +7,9 @@ import com.example.feature.content.ui.toContentModel
 import com.example.feature.topics.domain.usecase.GetTopicsUseCase
 import kotlinx.coroutines.flow.*
 import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Factory
 
-@KoinViewModel
+@Factory
 class TopicViewModel(
     private val getTopicsUseCase: GetTopicsUseCase,
     private val getRecommendedFeedUseCase: GetRecommendedFeedUseCase

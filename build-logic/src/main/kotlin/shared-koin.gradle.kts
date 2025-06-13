@@ -18,12 +18,19 @@ kotlin {
     }
 }
 
+ksp {
+    arg("KOIN_DEFAULT_MODULE","false")
+}
+
 dependencies {
     add("kspCommonMainMetadata", libs.findLibrary("koin.compiler").get())
+    //add("kspAndroid", libs.findLibrary("koin.compiler").get())
+    // add("kspIosMainMetadata", libs.findLibrary("koin.compiler").get())
 }
 
 
 tasks.withType<KotlinCompile>().configureEach {
+    println("task $name")
     if (name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
     }

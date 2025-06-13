@@ -13,11 +13,12 @@ import com.example.feature.users.ui.toUserModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Factory
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
-@KoinViewModel
+@Factory
 class UserInfoViewModel(
     private val getUserByIdUseCase: GetUserByIdUseCase,
     private val getMatchScoreUseCase: GetMatchScoreUseCase,

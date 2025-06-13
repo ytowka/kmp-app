@@ -24,13 +24,14 @@ import coil3.compose.AsyncImage
 import com.example.kmpapp.android.coreui.SearchTopBar
 import com.example.feature.users.ui.UserModel
 import com.example.feature.users.ui.list.UserListViewModel
+import com.example.kmpapp.android.coreui.injectViewModel
 import com.example.kmpapp.android.coreui.rememberPageableListState
 import org.koin.androidx.compose.koinViewModel
 import kotlin.uuid.ExperimentalUuidApi
 
 @Composable
 fun UserListScreen(
-    userListViewModel: UserListViewModel = koinViewModel(),
+    userListViewModel: UserListViewModel= injectViewModel(),
     onUserSelected: (UserModel) -> Unit,
 ) {
     val state by userListViewModel.uiState.collectAsState()

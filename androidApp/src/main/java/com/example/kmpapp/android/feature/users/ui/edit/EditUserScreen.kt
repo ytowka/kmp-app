@@ -26,13 +26,14 @@ import com.example.kmpapp.android.coreui.TopBar
 import com.example.feature.users.ui.edit.EditUserViewModel
 import org.koin.androidx.compose.koinViewModel
 import com.example.kmpapp.android.R
+import com.example.kmpapp.android.coreui.injectViewModel
 import kotlin.uuid.ExperimentalUuidApi
 
 @OptIn(ExperimentalUuidApi::class)
 @Composable
 fun EditUserScreen(
     onBack: () -> Unit,
-    viewModel: EditUserViewModel = koinViewModel(),
+    viewModel: EditUserViewModel= injectViewModel(),
 ) {
     val state by viewModel.uiState.collectAsState()
 

@@ -22,6 +22,7 @@ import com.example.feature.app.RootViewModel
 import com.example.feature.users.domain.dto.RoleDto
 import com.example.feature.users.ui.info.UserInfoViewModel
 import com.example.kmpapp.android.coreui.NavigationBar
+import com.example.kmpapp.android.coreui.injectViewModel
 import com.example.kmpapp.android.feature.auth.ui.AuthScreen
 import com.example.kmpapp.android.feature.content.ui.ContentListScreen
 import com.example.kmpapp.android.feature.review.ui.edit.ReviewEditorScreen
@@ -37,7 +38,7 @@ import kotlin.uuid.ExperimentalUuidApi
 @OptIn(ExperimentalUuidApi::class)
 @Composable
 fun RootScreen(
-    viewModel: RootViewModel = koinViewModel()
+    viewModel: RootViewModel= injectViewModel()
 ){
     val navController = rememberNavController()
     val isLoggedIn by viewModel.isLoggedIn.collectAsState()
@@ -100,7 +101,7 @@ fun RootScreen(
                     val id = backStackEntry.arguments?.getLong(NavDestinations.TopicContent.topicIdArg)!!
                     val name = backStackEntry.arguments?.getString(NavDestinations.TopicContent.topicNameArg)!!
                     ContentListScreen(
-                        viewModel = koinViewModel { parametersOf(id, name) },
+                        viewModel= injectViewModel { parametersOf(id, name) },
                         onContentClick = { navController.navigate(NavDestinations.ReviewList(it.id, it.name)) },
                         onBack = { navController.navigateUp() }
                     )
@@ -124,7 +125,7 @@ fun RootScreen(
                     arguments = listOf(navArgument(NavDestinations.UserDetails.userIdArg) { type = NavType.StringType })
                 ){ backStackEntry ->
                     EditUserScreen(
-                        viewModel = koinViewModel { parametersOf(backStackEntry.arguments?.getString(NavDestinations.UserDetails.userIdArg)!!) },
+                        viewModel= injectViewModel { parametersOf(backStackEntry.arguments?.getString(NavDestinations.UserDetails.userIdArg)!!) },
                         onBack = {
                             navController.navigateUp()
                         }
@@ -136,7 +137,7 @@ fun RootScreen(
                     arguments = listOf(navArgument(NavDestinations.UserProfile.userIdArg) { type = NavType.StringType })
                 ){ backStackEntry ->
                     UserInfoScreen(
-                        viewModel = koinViewModel { parametersOf(backStackEntry.arguments?.getString(NavDestinations.UserDetails.userIdArg)!!) },
+                        viewModel= injectViewModel { parametersOf(backStackEntry.arguments?.getString(NavDestinations.UserDetails.userIdArg)!!) },
                         onBack = {
                             navController.navigateUp()
                         },
@@ -154,7 +155,7 @@ fun RootScreen(
                     route = NavDestinations.MY_ACCOUNT,
                 ){
                     UserInfoScreen(
-                        viewModel = koinViewModel { parametersOf(UserInfoViewModel.MY_USER_ID) },
+                        viewModel= injectViewModel { parametersOf(UserInfoViewModel.MY_USER_ID) },
                         onBack = {
                             navController.navigateUp()
                         },
@@ -180,7 +181,7 @@ fun RootScreen(
                     val contentId = backStackEntry.arguments?.getLong(NavDestinations.ReviewList.contentIdArg)!!
                     val contentName = backStackEntry.arguments?.getString(NavDestinations.ReviewList.contentNameArg)!!
                     ReviewListScreen(
-                        viewModel = koinViewModel { parametersOf(contentId) },
+                        viewModel= injectViewModel { parametersOf(contentId) },
                         contentName = contentName,
                         onBack = {
                             navController.navigateUp()
@@ -200,7 +201,7 @@ fun RootScreen(
                 ){ backStackEntry ->
                     val contentId = backStackEntry.arguments?.getLong(NavDestinations.ReviewEditor.contentIdArg)!!
                     ReviewEditorScreen(
-                        viewModel = koinViewModel { parametersOf(contentId) },
+                        viewModel= injectViewModel { parametersOf(contentId) },
                         onBack = { navController.navigateUp() },
                         onSave = {  navController.navigate(NavDestinations.MY_ACCOUNT) }
                     )
