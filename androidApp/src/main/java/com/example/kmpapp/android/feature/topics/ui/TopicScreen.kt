@@ -11,10 +11,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
 import com.example.feature.content.ui.ContentModel
 import com.example.feature.topics.ui.TopicModel
 import com.example.feature.topics.ui.TopicViewModel
@@ -26,7 +28,7 @@ import com.example.kmpapp.android.coreui.injectViewModel
 
 @Composable
 fun TopicScreen(
-    topicsViewModel: TopicViewModel= injectViewModel(),
+    topicsViewModel: TopicViewModel = injectViewModel(),
     onTopicClick: (TopicModel) -> Unit,
     onContentClick: (ContentModel) -> Unit,
 ) {

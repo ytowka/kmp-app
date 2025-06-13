@@ -6,6 +6,7 @@
         android:name=".feature.app.App"
         android:allowBackup="false"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"

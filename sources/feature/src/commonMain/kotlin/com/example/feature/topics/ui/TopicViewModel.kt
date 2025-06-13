@@ -23,7 +23,9 @@ class TopicViewModel(
         TopicListState(
             topics = topics.getOrElse { emptyList() }.map { it.toTopicModel() },
             recommendedContent = feed.getOrElse { emptyList() }.map { it.toContentModel() }
-        )
+        ).also {
+
+        }
     }.stateIn(viewModelScope, started = SharingStarted.Lazily, initialValue = TopicListState())
 
 

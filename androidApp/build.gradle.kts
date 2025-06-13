@@ -46,6 +46,8 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.androidx.compose)
     implementation(libs.coil.compose)
+    implementation(libs.coil.network.core)
     implementation(libs.navigation.compose)
+    implementation(libs.napier)
     debugImplementation(libs.compose.ui.tooling)
 }
