@@ -1,7 +1,7 @@
-import com.google.devtools.ksp.gradle.KspTask
 import org.gradle.kotlin.dsl.dependencies
+import com.google.devtools.ksp.gradle.KspAATask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 
 plugins {
     kotlin("multiplatform")
@@ -9,6 +9,8 @@ plugins {
 }
 
 val libs = the<VersionCatalogsExtension>().named("libs")
+
+fun VersionCatalog.koin(): Any = findLibrary("koin.compiler").get()
 
 kotlin {
     sourceSets.named("commonMain") {
@@ -22,15 +24,41 @@ kotlin {
 
 
 dependencies {
-    add("kspCommonMainMetadata", libs.findLibrary("koin.compiler").get())
+    add("kspCommonMainMetadata", libs.koin())
+    configurations.forEach {
+        if(it.name.contains("ksp")) {
+            add(it.name, libs.koin())
+        }
+    }
 }
 
 ksp {
     arg("KOIN_DEFAULT_MODULE","false")
 }
 
-tasks.withType<KotlinCompilationTask<*>>().configureEach {
-    if (name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
+
+project.configurations.whenObjectAdded {
+    if (name.contains("ksp")) {
+        project.dependencies.add(name, libs.koin())
+    }
+}
+
+
+afterEvaluate {
+    kotlin {
+        sourceSets.named("androidMain") {
+            kotlin.srcDir("build/generated/ksp/android/androidMain/kotlin")
+        }
+    }
+
+    tasks.withType<KotlinCompilationTask<*>>().configureEach {
+        if (name != "kspCommonMainKotlinMetadata") {
+            dependsOn("kspCommonMainKotlinMetadata")
+        }
+    }
+    tasks.withType<KspAATask>().configureEach {
+        if (name != "kspCommonMainKotlinMetadata") {
+            dependsOn("kspCommonMainKotlinMetadata")
+        }
     }
 }
