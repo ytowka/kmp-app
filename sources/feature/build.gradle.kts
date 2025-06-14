@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.googleService)
     id("module-setup")
     id("shared-koin")
 }
@@ -18,6 +19,13 @@ kotlin {
                 implementation(libs.kotlinx.serialization.core)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.bundles.ktorClientCommon)
+            }
+        }
+        androidMain {
+            dependencies {
+                implementation(project.dependencies.platform(libs.firebase.bom))
+                implementation(libs.firebase.crashlytics)
+                implementation(libs.firebase.analytics)
             }
         }
     }

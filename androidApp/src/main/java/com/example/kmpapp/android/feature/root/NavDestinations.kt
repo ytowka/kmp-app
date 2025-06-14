@@ -1,4 +1,4 @@
-package com.example.kmpapp.android.feature.app
+package com.example.kmpapp.android.feature.root
 
 object NavDestinations {
 

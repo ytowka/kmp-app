@@ -1,4 +1,4 @@
-package com.example.kmpapp.android.feature.app.ui.theme
+package com.example.kmpapp.android.coreui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
