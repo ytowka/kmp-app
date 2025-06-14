@@ -1,153 +1,116 @@
 package com.example.feature.auth.ui
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.arch.MviViewModel
 import com.example.feature.auth.domain.dto.LoginRequestDto
 import com.example.feature.auth.domain.dto.RegisterRequestDto
 import com.example.feature.auth.domain.usecase.LoginUseCase
 import com.example.feature.auth.domain.usecase.RegisterUseCase
 import com.example.network.ApiException
 import io.ktor.http.HttpStatusCode
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
-
 
 @Factory
 class AuthViewModel(
     private val loginUseCase: LoginUseCase,
     private val registerUseCase: RegisterUseCase,
-) : ViewModel(), RegisterFormCallback, LoginFormCallback {
+) : MviViewModel<AuthIntent, AuthState, AuthSideEffect>(){
 
-    private val _uiState: MutableStateFlow<AuthState> = MutableStateFlow(AuthState())
-    val uiState: StateFlow<AuthState> = _uiState
 
-    val successLogin: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    override val initialState: AuthState
+        get() = AuthState()
 
-    override fun onRegister() {
-        uiState.value.registerState.let { state ->
-            if(state.isValid){
-                viewModelScope.launch {
-                    registerUseCase(
-                        RegisterRequestDto(
-                            username = state.username,
-                            password = state.password,
-                            email = state.email,
-                            fullName = state.fullName,
-                            phone = state.phone,
-                            avatarUri = state.imageUrl,
-                        )
-                    ).onSuccess {
-                        successLogin.value = true
-                    }.onFailure { throwable ->
-                        val error = mapError(throwable)
-                        _uiState.update {
-                            it.copy(registerState = it.registerState.copy(error = error))
-                        }
+    override fun reduce(state: AuthState, intent: AuthIntent): AuthState {
+        return when(intent){
+            AuthIntent.OnCreateAccount -> state.copy(
+                currentForm = Form.REGISTER,
+                registerState = state.registerState.copy(error = null),
+                loginState = state.loginState.copy(error = null),
+            )
+            is AuthIntent.OnEmailChange -> state.copy(
+                registerState = state.registerState.copy(email = intent.email),
+            )
+            is AuthIntent.OnFullNameChange -> state.copy(
+                registerState = state.registerState.copy(fullName = intent.fullName),
+            )
+            is AuthIntent.OnImagePicked -> state.copy(registerState = state.registerState.copy(imageUrl = intent.uri))
+            is AuthIntent.OnPasswordChange -> state.copy(
+                loginState = state.loginState.copy(password = intent.password),
+                registerState = state.registerState.copy(password = intent.password)
+            )
+            is AuthIntent.OnPasswordConfirmationChange -> state.copy(
+                registerState = state.registerState.copy(passwordConfirmation = intent.passwordConfirmation),
+            )
+            is AuthIntent.OnPhoneChange -> state.copy(registerState = state.registerState.copy(phone = intent.phone))
+            is AuthIntent.OnUsernameChange -> state.copy(
+                loginState = state.loginState.copy(username = intent.username),
+                registerState = state.registerState.copy(username = intent.username)
+            )
+            AuthIntent.ReturnToSignIn -> state.copy(
+                currentForm = Form.LOGIN,
+                registerState = state.registerState.copy(error = null),
+                loginState = state.loginState.copy(error = null),
+            )
+            is AuthIntent.ShowError -> state.copy(
+                loginState = state.loginState.copy(error = intent.error),
+                registerState = state.registerState.copy(error = intent.error)
+            )
+            else -> state
+        }
+    }
 
-                    }
+    override fun postProcess(oldState: AuthState, newState: AuthState, intent: AuthIntent) {
+        when(intent){
+            AuthIntent.OnRegister -> register(newState.registerState)
+            AuthIntent.OnLogin -> login(newState.loginState)
+            else -> {}
+        }
+    }
+
+    private fun register(registerState: RegisterState){
+        viewModelScope.launch {
+            if(registerState.isValid){
+                registerUseCase(
+                    RegisterRequestDto(
+                        username = registerState.username,
+                        password = registerState.password,
+                        email = registerState.email,
+                        fullName = registerState.fullName,
+                        phone = registerState.phone,
+                        avatarUri = registerState.imageUrl,
+                    )
+                ).onSuccess {
+                    showSideEffect(AuthSideEffect.Authenticated)
+                }.onFailure { throwable ->
+                    val error = mapError(throwable)
+                    accept(AuthIntent.ShowError(error))
                 }
-            }else{
-                _uiState.update { uistate ->
-                    uistate.copy(registerState = state.copy(showFieldError = true, error = Error.FIELD))
-                }
+            } else {
+                accept(AuthIntent.ShowError(Error.FIELD))
             }
         }
     }
 
-    override fun returnToSignIn() {
-        _uiState.update {
-            it.copy(currentForm = Form.LOGIN)
-        }
-    }
 
-
-    override fun onLogin() {
-        uiState.value.loginState.let {
-            if(it.isValid){
-                viewModelScope.launch {
-                    loginUseCase(
-                        LoginRequestDto(
-                            username = it.username,
-                            password = it.password,
-                        )
-                    ).onSuccess {
-                        successLogin.value = true
-                    }.onFailure { throwable ->
-                        val error = mapError(throwable)
-                        _uiState.update { uistate ->
-                            uistate.copy(loginState = uistate.loginState.copy(error = error))
-                        }
-                    }
+    private fun login(loginState: LoginState) {
+        viewModelScope.launch {
+            if(loginState.isValid){
+                loginUseCase(
+                    LoginRequestDto(
+                        username = loginState.username,
+                        password = loginState.password,
+                    )
+                ).onSuccess {
+                    showSideEffect(AuthSideEffect.Authenticated)
+                }.onFailure { throwable ->
+                    val error = mapError(throwable)
+                    accept(AuthIntent.ShowError(error))
                 }
+
             }else{
-                _uiState.update { state ->
-                    state.copy(loginState = it.copy(showFieldError = true, error = Error.FIELD))
-                }
+                accept(AuthIntent.ShowError(Error.FIELD))
             }
-        }
-    }
-
-    override fun onCreateAccount() {
-        _uiState.update {
-            it.copy(currentForm = Form.REGISTER)
-        }
-    }
-
-    override fun onUsernameChange(username: String) {
-        _uiState.update {
-            it.copy(
-                loginState = it.loginState.copy(username = username),
-                registerState = it.registerState.copy(username = username)
-            )
-        }
-    }
-
-    override fun onPasswordChange(password: String) {
-        _uiState.update {
-            it.copy(
-                loginState = it.loginState.copy(password = password),
-                registerState = it.registerState.copy(password = password)
-            )
-        }
-    }
-
-
-    override fun onFullNameChange(fullName: String) {
-        _uiState.update {
-            it.copy(
-                registerState = it.registerState.copy(fullName = fullName),
-            )
-        }
-    }
-
-    override fun onEmailChange(email: String) {
-        _uiState.update {
-            it.copy(
-                registerState = it.registerState.copy(email = email),
-            )
-        }
-    }
-
-    override fun onPhoneChange(phone: String) {
-        _uiState.update {
-            it.copy(registerState = it.registerState.copy(phone = phone))
-        }
-    }
-
-    override fun onImagePicked(uri: String?) {
-        _uiState.update {
-            it.copy(registerState = it.registerState.copy(imageUrl = uri))
-        }
-    }
-
-    override fun onPasswordConfirmationChange(passwordConfirmation: String) {
-        _uiState.update {
-            it.copy(
-                registerState = it.registerState.copy(passwordConfirmation = passwordConfirmation),
-            )
         }
     }
 

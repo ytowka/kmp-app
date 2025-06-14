@@ -1,11 +1,13 @@
 package com.example.kmpapp.android.coreui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import com.example.core.arch.MviViewModel
 import org.koin.compose.LocalKoinScope
 import org.koin.core.annotation.KoinInternalApi
 import org.koin.core.parameter.ParametersDefinition
@@ -35,4 +37,13 @@ inline fun <reified T : ViewModel> injectViewModel(
             }
         }
     ).get(T::class)
+}
+
+@Composable
+fun <SideEffect, State> MviViewModel<*, State, SideEffect>.onSideEffect(
+    onSideEffect: (SideEffect) -> Unit
+) {
+    LaunchedEffect(Unit) {
+        sideEffect.collect(onSideEffect)
+    }
 }

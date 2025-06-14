@@ -1,4 +1,4 @@
-package com.example.feature.auth.ui
+package com.example.kmpapp.android.feature.auth.ui
 
 interface LoginFormCallback{
     fun onUsernameChange(username:String)

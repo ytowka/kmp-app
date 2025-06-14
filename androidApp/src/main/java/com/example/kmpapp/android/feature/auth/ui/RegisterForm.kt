@@ -23,7 +23,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.example.feature.auth.ui.RegisterFormCallback
 import com.example.feature.auth.ui.RegisterState
 import com.example.kmpapp.android.R
 import androidx.core.net.toUri
