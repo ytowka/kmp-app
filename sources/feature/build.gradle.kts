@@ -1,39 +1,10 @@
 plugins {
-    println("plugins")
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.kotlinSerialization)
+    id("module-setup")
     id("shared-koin")
 }
 
 kotlin {
-    println("kotlin")
-    androidLibrary {
-        namespace = "com.example.feature"
-        compileSdk = 35
-        minSdk = 26
-    }
-
-    val xcfName = "featureKit"
-
-    iosX64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
-    iosArm64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
-    iosSimulatorArm64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
     sourceSets {
         commonMain {
             dependencies {
@@ -47,22 +18,6 @@ kotlin {
                 implementation(libs.kotlinx.serialization.core)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.bundles.ktorClientCommon)
-            }
-        }
-        androidMain {
-            dependencies {
-            }
-        }
-
-        iosMain {
-            dependencies {
-
-            }
-        }
-
-        commonTest {
-            dependencies {
-                implementation(libs.kotlin.test)
             }
         }
     }
