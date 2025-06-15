@@ -17,7 +17,7 @@ abstract class MviViewModel<Intent, State, SideEffect> : ViewModel() {
 
     abstract val initialState: State
 
-    open val debugMode: Boolean = false
+    open val debugMode: Boolean = DEBUG
 
     private val _state: MutableStateFlow<State> by lazy {
         MutableStateFlow(initialState)
@@ -25,7 +25,7 @@ abstract class MviViewModel<Intent, State, SideEffect> : ViewModel() {
     val state: StateFlow<State>
         get() = _state
 
-    private val _sideEffect = MutableSharedFlow<SideEffect>()
+    private val _sideEffect = MutableSharedFlow<SideEffect>(extraBufferCapacity = 5)
     val sideEffect: SharedFlow<SideEffect>
         get() = _sideEffect
 
@@ -38,29 +38,28 @@ abstract class MviViewModel<Intent, State, SideEffect> : ViewModel() {
                 _intent.collect(::processIntent)
             }
             launch(Dispatchers.Main) {
-                if(debugMode) Napier.d("loadData", tag = MVI_TAG)
+                log("loadData")
                 loadData()
             }
         }
     }
 
     private fun processIntent(intent: Intent) {
-        if(debugMode) Napier.d("processIntent $intent", tag = MVI_TAG)
+        log("processIntent $intent")
         _state.update { currentState ->
             val newState = reduce(currentState, intent)
-            if(debugMode) Napier.d("reduced\n--$currentState\n++$newState", tag = MVI_TAG)
+            log("reduced\n--$currentState\n++$newState")
             postProcess(currentState, newState, intent)
             newState
         }
     }
 
     fun accept(intent: Intent) {
-        if(debugMode) Napier.d("accept $intent", tag = MVI_TAG)
         _intent.tryEmit(intent)
     }
 
     fun showSideEffect(sideEffect: SideEffect) {
-        if(debugMode) Napier.d("showSideEffect $sideEffect", tag = MVI_TAG)
+        log("showSideEffect $sideEffect")
         _sideEffect.tryEmit(sideEffect)
     }
 
@@ -69,4 +68,12 @@ abstract class MviViewModel<Intent, State, SideEffect> : ViewModel() {
     abstract fun reduce(state: State, intent: Intent): State
 
     open fun postProcess(oldState: State, newState: State, intent: Intent) {  }
+
+    private fun log(message: String){
+        if(debugMode) Napier.d("${this::class.simpleName}: $message", tag = MVI_TAG)
+    }
+
+    companion object {
+        private const val DEBUG: Boolean = true
+    }
 }

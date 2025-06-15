@@ -2,6 +2,7 @@ package com.example.feature.review.ui.edit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.arch.MviViewModel
 import com.example.feature.content.domain.usecase.GetContentByIdUseCase
 import com.example.feature.content.ui.toContentModel
 import com.example.feature.review.domain.dto.ReviewRequestDto
@@ -26,60 +27,69 @@ class ReviewEditorViewModel(
     val getReviewByUserAndContentUseCase: GetReviewByUserAndContentUseCase,
     val getMeUseCase: GetMeUseCase,
     val contentId: Long
-) : ViewModel() {
+) : MviViewModel<EditReviewIntent, EditReviewState, EditReviewSideEffect>() {
 
-    val _uiState = MutableStateFlow(EditReviewState())
-    val uiState: StateFlow<EditReviewState> = _uiState.asStateFlow()
+    override val initialState: EditReviewState = EditReviewState()
 
-    val updateFlow = MutableSharedFlow<Unit>()
-
-    init {
-        viewModelScope.launch {
-            getContentByIdUseCase(contentId).onSuccess { content ->
-                _uiState.update { it.copy(content = content.toContentModel()) }
-            }
+    override suspend fun loadData() {
+        getContentByIdUseCase(contentId).onSuccess { content ->
+            accept(EditReviewIntent.UpdateContent(content.toContentModel()))
         }
         getWrittenReview()
     }
 
-
-    fun editMark(mark: Int){
-        _uiState.update {
-            it.copy(mark = mark)
+    override fun reduce(state: EditReviewState, intent: EditReviewIntent): EditReviewState {
+        return when(intent){
+            is EditReviewIntent.Delete -> state.copy(mode = EditReviewMode.Pending)
+            is EditReviewIntent.EditMark -> state.copy(mark = intent.mark)
+            is EditReviewIntent.EditText -> state.copy(text = intent.text)
+            EditReviewIntent.LoadReview -> state.copy(mode = EditReviewMode.Pending)
+            EditReviewIntent.Save -> state.copy(mode = EditReviewMode.Pending)
+            is EditReviewIntent.UpdateContent -> state.copy(content = intent.content)
+            is EditReviewIntent.UpdateMode -> {
+                val writtenReview = (state.mode as? EditReviewMode.Edit)?.reviewModel
+                state.copy(
+                    mode = intent.mode,
+                    mark = writtenReview?.mark,
+                    text = writtenReview?.text.orEmpty()
+                )
+            }
         }
     }
 
-    fun editText(text: String){
-        _uiState.update {
-            it.copy(text = text)
+    override fun postProcess(oldState: EditReviewState, newState: EditReviewState, intent: EditReviewIntent) {
+        when(intent){
+            EditReviewIntent.Delete -> delete(newState)
+            EditReviewIntent.Save -> save(newState)
+            else -> {}
         }
     }
 
-    fun delete(){
-        val mode = uiState.value.mode
+    private fun delete(state: EditReviewState){
+        val mode = state.mode
         if (mode is EditReviewMode.Edit){
             viewModelScope.launch {
                 deleteReviewUseCase(mode.reviewModel.id).onSuccess {
-                    updateFlow.emit(Unit)
+                    showSideEffect(EditReviewSideEffect.ReviewUpdated)
                 }
             }
         }
     }
 
-    fun save() {
-        if(uiState.value.isValid){
+    fun save(state: EditReviewState) {
+        if(state.isValid){
             viewModelScope.launch {
                 val request = ReviewRequestDto(
                     contentId = contentId,
-                    mark = uiState.value.mark ?: 0,
-                    text = uiState.value.text
+                    mark = state.mark ?: 0,
+                    text = state.text
                 )
-                when(_uiState.value.mode){
+                when(state.mode){
                     is EditReviewMode.Edit -> editReviewUseCase(request)
                     EditReviewMode.New -> writeReviewUseCase(request)
                     EditReviewMode.Pending -> Result.failure(Exception("not valid"))
                 }.onSuccess {
-                    updateFlow.emit(Unit)
+                    showSideEffect(EditReviewSideEffect.ReviewUpdated)
                 }
             }
 
@@ -96,19 +106,10 @@ class ReviewEditorViewModel(
             )
             getReviewByUserAndContentUseCase(params)
                 .onSuccess { review ->
-                    _uiState.update {
-                        it.copy(
-                            mode = EditReviewMode.Edit(reviewModel = review.toReviewModel().reviewModel),
-                            text = review.text,
-                            mark = review.mark
-                        )
-                    }
+                    accept(EditReviewIntent.UpdateMode(EditReviewMode.Edit(review.toReviewModel().reviewModel)))
                 }.onFailure {
-                    _uiState.update {
-                        it.copy(mode = EditReviewMode.New)
-                    }
+                    accept(EditReviewIntent.UpdateMode(EditReviewMode.New))
                 }
         }
-
     }
 }

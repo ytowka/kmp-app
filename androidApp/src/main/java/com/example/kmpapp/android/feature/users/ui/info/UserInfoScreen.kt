@@ -30,6 +30,7 @@ import coil3.compose.AsyncImage
 import com.example.core.paging.PagingState
 import com.example.kmpapp.android.coreui.TopBar
 import com.example.feature.review.ui.ReviewCard
+import com.example.feature.users.ui.info.UserInfoIntent
 import com.example.feature.users.ui.info.UserInfoViewModel
 import com.example.kmpapp.android.coreui.rememberPageableListState
 import com.example.kmpapp.android.feature.review.ui.list.MarkBadge
@@ -44,7 +45,7 @@ fun UserInfoScreen(
     onContentClick: (ReviewCard) -> Unit,
     onReviewClick: (ReviewCard) -> Unit,
 ){
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     Column(
         modifier = Modifier
@@ -59,12 +60,14 @@ fun UserInfoScreen(
 
         Column(
             modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.primaryContainer, shape = RoundedCornerShape(
-                    topStart = 0.dp,
-                    topEnd = 0.dp,
-                    bottomStart = 10.dp,
-                    bottomEnd = 10.dp
-                ))
+                .background(
+                    color = MaterialTheme.colorScheme.primaryContainer, shape = RoundedCornerShape(
+                        topStart = 0.dp,
+                        topEnd = 0.dp,
+                        bottomStart = 10.dp,
+                        bottomEnd = 10.dp
+                    )
+                )
                 .padding(10.dp)
                 .fillMaxSize(),
         ) {
@@ -103,7 +106,7 @@ fun UserInfoScreen(
         UserProfileReviewList(
             modifier = Modifier.weight(1f),
             pagingState = state.reviewListState,
-            nextPageRequest = viewModel::getNextPage,
+            nextPageRequest = { viewModel.accept(UserInfoIntent.LoadNext) },
             onContentClick = onContentClick,
             onReviewClick = onReviewClick.takeIf { state.isMe },
         )

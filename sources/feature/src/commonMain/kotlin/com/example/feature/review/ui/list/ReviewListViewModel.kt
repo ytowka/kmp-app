@@ -1,35 +1,45 @@
 package com.example.feature.review.ui.list
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.arch.MviViewModel
 import com.example.core.paging.PagingResponse
 import com.example.feature.review.domain.dto.ReviewDto
 import com.example.feature.review.domain.usecase.GetReviewsByContentUseCase
 import com.example.feature.review.ui.toReviewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.android.annotation.KoinViewModel
 import org.koin.core.annotation.Factory
 
 @Factory
 class ReviewListViewModel(
     val reviewsByContentUseCase: GetReviewsByContentUseCase,
     val contentId: Long,
-) : ViewModel(){
+) : MviViewModel<ReviewListIntent, ReviewListState, ReviewListSideEffect>(){
 
-    val _uiState = MutableStateFlow(ReviewListState())
-    val uiState = _uiState.asStateFlow()
 
-    init {
-        getNextPage()
+    override val initialState: ReviewListState = ReviewListState()
+
+    override suspend fun loadData() {
+        getNextPage(initialState)
     }
 
-    fun getNextPage(){
+    override fun reduce(state: ReviewListState, intent: ReviewListIntent): ReviewListState {
+        return when(intent){
+            is ReviewListIntent.UpdatePagingState -> state.copy(listState = intent.pagingState)
+            else -> state
+        }
+    }
+
+    override fun postProcess(oldState: ReviewListState, newState: ReviewListState, intent: ReviewListIntent) {
+        when(intent){
+            ReviewListIntent.LoadNext -> getNextPage(newState)
+            else -> {}
+        }
+    }
+
+    private fun getNextPage(state: ReviewListState){
         viewModelScope.launch {
-            uiState.value.listState.loadNext {
+            state.listState.loadNext {
                 val params = GetReviewsByContentUseCase.Params(contentId, it)
                 val result = reviewsByContentUseCase(params).getOrThrow()
                 PagingResponse(
@@ -38,7 +48,7 @@ class ReviewListViewModel(
                     hasNextPage = result.hasNextPage
                 )
             }.collectLatest { pagingData ->
-                _uiState.update { it.copy(listState = pagingData) }
+                accept(ReviewListIntent.UpdatePagingState(pagingData))
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.example.feature.app
+package com.example.feature.root
 
 import com.example.feature.users.domain.dto.UserDto
 

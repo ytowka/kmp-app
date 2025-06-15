@@ -22,4 +22,6 @@ object CommonDi {
             )
         }
     }
+
+    val debug: Boolean = true
 }

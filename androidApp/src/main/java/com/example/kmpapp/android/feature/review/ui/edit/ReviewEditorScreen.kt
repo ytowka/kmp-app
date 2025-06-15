@@ -24,11 +24,13 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.feature.content.ui.ContentModel
 import com.example.feature.review.ui.edit.EditReviewMode
+import com.example.feature.review.ui.edit.EditReviewSideEffect
+import com.example.feature.review.ui.edit.EditReviewIntent
 import com.example.feature.review.ui.edit.ReviewEditorViewModel
 import com.example.kmpapp.android.coreui.TopBar
 import com.example.kmpapp.android.feature.content.ui.MarkColors
-import kotlinx.coroutines.flow.collectLatest
 import com.example.kmpapp.android.R
+import com.example.kmpapp.android.coreui.onSideEffect
 
 @Composable
 fun ReviewEditorScreen(
@@ -36,11 +38,11 @@ fun ReviewEditorScreen(
     onBack: () -> Unit,
     onSave: () -> Unit
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.updateFlow.collectLatest {
-            onSave()
+    viewModel.onSideEffect {
+        when (it) {
+            EditReviewSideEffect.ReviewUpdated -> onSave()
         }
     }
 
@@ -52,7 +54,7 @@ fun ReviewEditorScreen(
             endContent = if(state.mode is EditReviewMode.Edit) {
                 {
                     IconButton(
-                        onClick = viewModel::delete
+                        onClick = { viewModel.accept(EditReviewIntent.Delete) }
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
@@ -75,7 +77,7 @@ fun ReviewEditorScreen(
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.text,
-                onValueChange = viewModel::editText,
+                onValueChange = { viewModel.accept(EditReviewIntent.EditText(it)) },
                 placeholder = {
                     Text(
                         text = stringResource(R.string.review_text_field_hint),
@@ -86,12 +88,16 @@ fun ReviewEditorScreen(
             Spacer(modifier = Modifier.height(10.dp))
             MarkPicker(
                 mark = state.mark ?: 0,
-                onMarkChanged = viewModel::editMark
+                onMarkChanged = {
+                    viewModel.accept(EditReviewIntent.EditMark(it))
+                }
             )
             Spacer(modifier = Modifier.height(10.dp))
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = viewModel::save,
+                onClick = {
+                    viewModel.accept(EditReviewIntent.Save)
+                },
                 enabled = state.isValid,
             ){
                 Text(text = stringResource(R.string.save),)
@@ -108,7 +114,7 @@ private fun ReviewEditContentHeader(
         .clip(MaterialTheme.shapes.medium)
         .fillMaxWidth()
         .background(MaterialTheme.colorScheme.surface)
-        .aspectRatio(3f/2f)
+        .aspectRatio(3f / 2f)
     ) {
         if(content != null){
             AsyncImage(

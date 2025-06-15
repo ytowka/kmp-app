@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.core.paging.PagingState
 import com.example.feature.review.ui.ReviewCard
+import com.example.feature.review.ui.list.ReviewListIntent
 import com.example.kmpapp.android.coreui.TopBar
 import com.example.feature.review.ui.list.ReviewListViewModel
 import com.example.kmpapp.android.coreui.rememberPageableListState
@@ -39,7 +40,7 @@ fun ReviewListScreen(
     onWriteReview: () -> Unit,
     onCardClick: (ReviewCard) -> Unit,
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.state.collectAsState()
 
 
     Column {
@@ -56,7 +57,9 @@ fun ReviewListScreen(
             ReviewList(
                 modifier = Modifier.fillMaxSize(1f),
                 pagingState = state.listState,
-                nextPageRequest = viewModel::getNextPage,
+                nextPageRequest = {
+                    viewModel.accept(ReviewListIntent.LoadNext)
+                },
                 onClick = onCardClick,
             )
             FloatingActionButton(

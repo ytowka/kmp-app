@@ -1,7 +1,7 @@
 package com.example.feature.users.ui.info
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.arch.MviViewModel
 import com.example.core.paging.PagingResponse
 import com.example.feature.review.domain.dto.ReviewDto
 import com.example.feature.review.domain.usecase.GetReviewsByUserUseCase
@@ -12,7 +12,6 @@ import com.example.feature.users.domain.usecase.GetUserByIdUseCase
 import com.example.feature.users.ui.toUserModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.koin.android.annotation.KoinViewModel
 import org.koin.core.annotation.Factory
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -25,47 +24,59 @@ class UserInfoViewModel(
     private val reviewsByUserUseCase: GetReviewsByUserUseCase,
     private val getMeUseCase: GetMeUseCase,
     private val userId: String,
-) : ViewModel(){
+) : MviViewModel<UserInfoIntent, UserInfoState, UserInfoSideEffect>(){
 
-    val _uiState = MutableStateFlow(UserInfoState())
-    val uiState = _uiState.asStateFlow()
+    override val initialState: UserInfoState = UserInfoState()
 
-    init {
+    override suspend fun loadData() {
         if(userId == MY_USER_ID){
-            viewModelScope.launch {
-                val user = getMeUseCase().getOrElse { return@launch }
-                _uiState.updateAndGet {
-                    it.copy(
-                        userModel = user.toUserModel(),
-                        isMe = true
-                    )
-                }
-                getNextPage()
-            }
+            val user = getMeUseCase().getOrElse { return }
+            accept(UserInfoIntent.SetUserModel(
+                userModel = user.toUserModel(),
+                isMe = true
+            ))
         }else{
             viewModelScope.launch {
                 getUserByIdUseCase(userId).onSuccess { result ->
-                    _uiState.update {
-                        it.copy(userModel = result.toUserModel())
-                    }
+                    accept(
+                        UserInfoIntent.SetUserModel(
+                            userModel = result.toUserModel(),
+                            isMe = false
+                        )
+                    )
                 }
-                getNextPage()
             }
             viewModelScope.launch {
                 getMatchScoreUseCase(Uuid.parse(userId)).onSuccess { result ->
-                    _uiState.update {
-                        it.copy(matchScore = result)
-                    }
+                    // TODO
                 }
             }
         }
-
     }
 
-    fun getNextPage(){
+    override fun reduce(state: UserInfoState, intent: UserInfoIntent): UserInfoState {
+        return when(intent){
+            is UserInfoIntent.UpdatePagingState -> state.copy(reviewListState = intent.pagingState)
+            is UserInfoIntent.SetUserModel -> state.copy(
+                userModel = intent.userModel,
+                isMe = intent.isMe
+            )
+            else -> state
+        }
+    }
+
+    override fun postProcess(oldState: UserInfoState, newState: UserInfoState, intent: UserInfoIntent) {
+        when(intent){
+            UserInfoIntent.LoadNext -> getNextPage(newState)
+            is UserInfoIntent.SetUserModel -> getNextPage(newState)
+            else -> {}
+        }
+    }
+
+    private fun getNextPage(state: UserInfoState){
+        val userId = state.userModel?.id ?: return
         viewModelScope.launch {
-            uiState.value.reviewListState.loadNext {
-                val userId = uiState.first { it.userModel != null }.userModel?.id!!
+            state.reviewListState.loadNext {
                 val params = GetReviewsByUserUseCase.Params(userId, it)
                 val result = reviewsByUserUseCase(params).getOrThrow()
                 PagingResponse(
@@ -74,7 +85,7 @@ class UserInfoViewModel(
                     hasNextPage = result.hasNextPage
                 )
             }.collectLatest { pagingData ->
-                _uiState.update { it.copy(reviewListState = pagingData) }
+                accept(UserInfoIntent.UpdatePagingState(pagingData))
             }
         }
     }

@@ -1,7 +1,7 @@
 package com.example.feature.users.ui.list
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.arch.MviViewModel
 import com.example.core.paging.PagingResponse
 import com.example.feature.users.domain.dto.UserDto
 import com.example.feature.users.domain.usecase.GetUserListUseCase
@@ -9,47 +9,47 @@ import com.example.feature.users.domain.usecase.SearchUserUseCase
 import com.example.feature.users.ui.toUserModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.koin.android.annotation.KoinViewModel
 import org.koin.core.annotation.Factory
 
 @Factory
 class UserListViewModel(
     private val getUserListUseCase: GetUserListUseCase,
     private val searchUserUseCase: SearchUserUseCase
-) : ViewModel(){
+) : MviViewModel<UserListIntent, UserListState, UserListSideEffect>(){
 
+    override val initialState: UserListState = UserListState()
 
-    private val _uiState = MutableStateFlow(UserListState())
-    val uiState: StateFlow<UserListState> = _uiState
+    override suspend fun loadData() {
+        getNextPage(initialState)
+        state.map { it.searchQuery }
+            .filter { it.isNotBlank() }
+            .distinctUntilChanged()
+            .collectLatest {
+                val users = searchUserUseCase(it).getOrDefault(emptyList())
+                accept(UserListIntent.SetSearchList(users.map(UserDto::toUserModel)))
+            }
+    }
 
-    init {
-        viewModelScope.launch {
-            getNextPage()
-        }
-        viewModelScope.launch {
-            uiState.map { it.searchQuery }
-                .filter { it.isNotBlank() }
-                .distinctUntilChanged()
-                .collectLatest {
-                    val users = searchUserUseCase(it).getOrDefault(emptyList())
-                    _uiState.update { it.copy(
-                        searchUsers = users.map {
-                            it.toUserModel()
-                        }
-                    ) }
-                }
+    override fun reduce(state: UserListState, intent: UserListIntent): UserListState {
+        return when(intent){
+            is UserListIntent.UpdatePagingState -> state.copy(users = intent.pagingState)
+            is UserListIntent.Search -> state.copy(searchQuery = intent.query)
+            is UserListIntent.SetSearchList -> state.copy(searchUsers = intent.list)
+            else -> state
+
         }
     }
 
-    fun onQueryChange(query: String) {
-        _uiState.update {
-            it.copy(searchQuery = query)
+    override fun postProcess(oldState: UserListState, newState: UserListState, intent: UserListIntent) {
+        when(intent){
+            UserListIntent.LoadNext -> getNextPage(newState)
+            else -> {}
         }
     }
 
-    fun getNextPage(){
+    private fun getNextPage(state: UserListState){
         viewModelScope.launch {
-            uiState.value.users.loadNext {
+            state.users.loadNext {
                 val result = getUserListUseCase(it).getOrThrow()
                 PagingResponse(
                     data = result.users.map(UserDto::toUserModel),
@@ -57,7 +57,7 @@ class UserListViewModel(
                     hasNextPage = result.hasNextPage
                 )
             }.collectLatest {
-                _uiState.update { state -> state.copy(users = it) }
+                accept(UserListIntent.UpdatePagingState(it))
             }
         }
     }

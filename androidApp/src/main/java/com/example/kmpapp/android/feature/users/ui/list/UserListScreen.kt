@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.kmpapp.android.coreui.SearchTopBar
 import com.example.feature.users.ui.UserModel
+import com.example.feature.users.ui.list.UserListIntent
 import com.example.feature.users.ui.list.UserListViewModel
 import com.example.kmpapp.android.coreui.injectViewModel
 import com.example.kmpapp.android.coreui.rememberPageableListState
@@ -34,19 +35,19 @@ fun UserListScreen(
     userListViewModel: UserListViewModel= injectViewModel(),
     onUserSelected: (UserModel) -> Unit,
 ) {
-    val state by userListViewModel.uiState.collectAsState()
+    val state by userListViewModel.state.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize()) {
         SearchTopBar(
             actionIcon = Icons.AutoMirrored.Filled.ArrowBack,
             text = state.searchQuery,
-            onQueryChanged = { searchQuery -> userListViewModel.onQueryChange(searchQuery) },
+            onQueryChanged = { searchQuery -> userListViewModel.accept(UserListIntent.Search(searchQuery)) },
             onActionClick = {}
         )
 
         val lazyListState = rememberPageableListState (
             state = state.currentPagingState,
-            nextPageRequest = { userListViewModel.getNextPage() }
+            nextPageRequest = { userListViewModel.accept(UserListIntent.LoadNext) }
         )
 
         LazyColumn(

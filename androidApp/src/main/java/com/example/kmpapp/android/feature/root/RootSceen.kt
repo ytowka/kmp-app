@@ -19,9 +19,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.feature.app.RootSideEffect
-import com.example.feature.app.RootState
-import com.example.feature.app.RootViewModel
+import com.example.feature.root.RootSideEffect
+import com.example.feature.root.RootState
+import com.example.feature.root.RootViewModel
 import com.example.feature.users.domain.dto.RoleDto
 import com.example.feature.users.ui.info.UserInfoViewModel
 import com.example.kmpapp.android.coreui.NavigationBar

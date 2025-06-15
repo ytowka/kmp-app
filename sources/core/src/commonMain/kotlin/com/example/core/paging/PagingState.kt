@@ -2,7 +2,7 @@ package com.example.core.paging
 
 import kotlinx.coroutines.flow.*
 
-class PagingState<T> (
+data class PagingState<T> (
     val list: List<T>,
     val currentPage: Int = -1,
     val hasNextPage: Boolean = true,

@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.example.feature.content.ui.ContentListIntent
 import com.example.kmpapp.android.coreui.SearchTopBar
 import com.example.feature.content.ui.ContentListViewModel
 import com.example.feature.content.ui.ContentModel
@@ -39,11 +40,11 @@ fun ContentListScreen(
     onContentClick: (ContentModel) -> Unit,
     onBack: () -> Unit,
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     val pagingListState = rememberPageableListState(
         state = state.currentPagerState,
-        nextPageRequest = viewModel::getNextPage
+        nextPageRequest = { viewModel.accept(ContentListIntent.LoadNext) }
     )
 
     Column {
@@ -51,7 +52,9 @@ fun ContentListScreen(
             actionIcon = Icons.Filled.ArrowBack,
             onActionClick = onBack,
             text = state.searchQuery,
-            onQueryChanged = viewModel::onQueryChange
+            onQueryChanged = {
+                viewModel.accept(ContentListIntent.Search(it))
+            }
         )
 
         LazyColumn(

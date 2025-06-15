@@ -21,12 +21,16 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.feature.users.ui.UserRoleModel
+import com.example.feature.users.ui.edit.EditUserSideEffect
 import com.example.kmpapp.android.coreui.DropDownMenu
 import com.example.kmpapp.android.coreui.TopBar
 import com.example.feature.users.ui.edit.EditUserViewModel
+import com.example.feature.users.ui.edit.EditUserCallback
+import com.example.feature.users.ui.edit.EditUserIntent
 import org.koin.androidx.compose.koinViewModel
 import com.example.kmpapp.android.R
 import com.example.kmpapp.android.coreui.injectViewModel
+import com.example.kmpapp.android.coreui.onSideEffect
 import kotlin.uuid.ExperimentalUuidApi
 
 @OptIn(ExperimentalUuidApi::class)
@@ -35,11 +39,40 @@ fun EditUserScreen(
     onBack: () -> Unit,
     viewModel: EditUserViewModel= injectViewModel(),
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(state.userSaved) {
-        if(state.userSaved) {
-            onBack()
+    viewModel.onSideEffect {
+        when(it){
+            EditUserSideEffect.UserSaved -> onBack()
+        }
+    }
+
+    val callback = remember {
+        object : EditUserCallback {
+            override fun changeFullName(fullName: String) {
+                viewModel.accept(EditUserIntent.ChangeFullName(fullName))
+            }
+
+            override fun changeEmail(email: String) {
+                viewModel.accept(EditUserIntent.ChangeEmail(email))
+            }
+
+            override fun changePhoneNumber(phoneNumber: String) {
+                viewModel.accept(EditUserIntent.ChangePhoneNumber(phoneNumber))
+            }
+
+            override fun changeRole(role: UserRoleModel) {
+                viewModel.accept(EditUserIntent.ChangeRole(role))
+            }
+
+            override fun changeBlocked(blocked: Boolean) {
+                viewModel.accept(EditUserIntent.ChangeBlocked(blocked))
+            }
+
+            override fun onSave() {
+                viewModel.accept(EditUserIntent.Save)
+            }
+
         }
     }
 
@@ -96,7 +129,7 @@ fun EditUserScreen(
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.fullName,
-                onValueChange = viewModel::changeFullName,
+                onValueChange = callback::changeFullName,
                 label = { Text(stringResource(R.string.full_name)) },
                 isError = state.fullName.isBlank(),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -106,7 +139,7 @@ fun EditUserScreen(
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.email,
-                onValueChange = viewModel::changeEmail,
+                onValueChange = callback::changeEmail,
                 label = { Text(stringResource(R.string.email)) },
                 isError = state.email.isBlank(),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -116,7 +149,7 @@ fun EditUserScreen(
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.phone,
-                onValueChange = viewModel::changePhoneNumber,
+                onValueChange = callback::changePhoneNumber,
                 label = { Text(stringResource(R.string.phone_number)) },
                 isError = state.phone.isBlank(),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -142,7 +175,7 @@ fun EditUserScreen(
                     onStateChange = { dropdownExpanded = it },
                     onItemSelected = { index, item ->
                         dropdownExpanded = false
-                        viewModel.changeRole(item)
+                        callback.changeRole(item)
                     },
                     header = {
                         Text(
@@ -175,7 +208,7 @@ fun EditUserScreen(
                     ) {
                         Checkbox(
                             checked = state.isBlocked,
-                            onCheckedChange = viewModel::changeBlocked,
+                            onCheckedChange = callback::changeBlocked,
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Text(stringResource(R.string.is_blocked))
@@ -186,7 +219,7 @@ fun EditUserScreen(
         Spacer(modifier = Modifier.height(30.dp))
         Button(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            onClick = viewModel::onSave,
+            onClick = callback::onSave,
             enabled = state.isChanged,
         ){
             Text(stringResource(R.string.save))
