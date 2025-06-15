@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 private const val MVI_TAG = "MVI"
 
-abstract class MviViewModel<Intent, State, SideEffect> : ViewModel() {
+abstract class MviViewModel<Intent, State, SideEffect> : ViewModel(), IMviViewModel<Intent, State, SideEffect> {
 
     abstract val initialState: State
 
@@ -22,11 +22,11 @@ abstract class MviViewModel<Intent, State, SideEffect> : ViewModel() {
     private val _state: MutableStateFlow<State> by lazy {
         MutableStateFlow(initialState)
     }
-    val state: StateFlow<State>
+    override val state: StateFlow<State>
         get() = _state
 
     private val _sideEffect = MutableSharedFlow<SideEffect>(extraBufferCapacity = 5)
-    val sideEffect: SharedFlow<SideEffect>
+    override val sideEffect: SharedFlow<SideEffect>
         get() = _sideEffect
 
 
@@ -54,7 +54,7 @@ abstract class MviViewModel<Intent, State, SideEffect> : ViewModel() {
         }
     }
 
-    fun accept(intent: Intent) {
+    override fun accept(intent: Intent) {
         _intent.tryEmit(intent)
     }
 
