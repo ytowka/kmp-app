@@ -16,14 +16,12 @@ class MviViewModelWrapper<Intent: AnyObject, State: AnyObject, SideEffect: AnyOb
     @Published var state: State
     
     init(vm: CoreMviViewModel<Intent, State, SideEffect>) {
-        print("init")
         self.vm = vm
         state = vm.initialState!
     }
     
     @MainActor
     func activate() async {
-        print("activate")
         for await state in vm.state {
             self.state = state!
         }
