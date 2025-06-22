@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinSerialization)
     id("shared-koin")
+    alias(libs.plugins.skie)
 }
 
 android {
@@ -38,6 +39,15 @@ kotlin {
         it.binaries.framework {
             baseName = "shared"
             isStatic = true
+            export(projects.core)
+            export(projects.network)
+            export(projects.data)
+            export(projects.feature)
+            export(projects.api)
+//            export(project(":core"))
+//            export(project(":network"))
+//            export(project(":data"))
+//            export(project(":feature"))
         }
     }
 
@@ -47,6 +57,7 @@ kotlin {
             api(project(":network"))
             api(project(":data"))
             api(project(":feature"))
+            api(project(":api"))
 
             implementation(libs.kotlinx.serialization.core)
             implementation(libs.kotlinx.serialization.json)

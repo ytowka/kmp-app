@@ -6,4 +6,5 @@ plugins {
     alias(libs.plugins.compose.compiler).apply(false)
     alias(libs.plugins.android.kotlin.multiplatform.library).apply(false)
     alias(libs.plugins.googleService).apply(false)
+    alias(libs.plugins.skie).apply(false)
 }
