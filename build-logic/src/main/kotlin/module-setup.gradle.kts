@@ -14,10 +14,8 @@ plugins {
 }
 
 kotlin {
-
     val moduleName = extension.name.get()
 
-    println("setup $moduleName")
     androidLibrary {
         namespace = "com.example.$moduleName"
         compileSdk = 35
@@ -26,21 +24,14 @@ kotlin {
 
     val xcfName = "${moduleName}Kit"
 
-    iosX64 {
-        binaries.framework {
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
             baseName = xcfName
-        }
-    }
-
-    iosArm64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
-    iosSimulatorArm64 {
-        binaries.framework {
-            baseName = xcfName
+            isStatic = true
         }
     }
 }
