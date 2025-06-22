@@ -29,29 +29,29 @@ struct RegistrationView: View {
                     InputField(
                         placeholder: "Логин",
                         text: Binding(
-                            get: { state.username },
+                            get: { self.vm.state.registerState.username },
                             set: { newValue in
                                 vm.accept(intent: FeatureAuthIntentOnUsernameChange(username: newValue))
                             }
                         ),
-                        showError: state.isUsernameValid == false
+                        showError: vm.state.registerState.isUsernameValid == false && vm.state.registerState.showFieldError
                     )
 
                     InputField(
                         placeholder: "Эл. почта",
                         text: Binding(
-                            get: { state.email },
+                            get: { self.vm.state.registerState.email },
                             set: { newValue in
                                 vm.accept(intent: FeatureAuthIntentOnEmailChange(email: newValue))
                             }
                         ),
-                        showError: state.isEmailValid == false
+                        showError: state.isEmailValid == false && state.showFieldError
                     )
 
                     InputField(
                         placeholder: "Номер телефона",
                         text: Binding(
-                            get: { state.phone },
+                            get: { self.vm.state.registerState.phone },
                             set: { newValue in
                                 vm.accept(intent: FeatureAuthIntentOnPhoneChange(phone: newValue))
                             }
@@ -62,44 +62,37 @@ struct RegistrationView: View {
                     InputField(
                         placeholder: "Полное имя",
                         text: Binding(
-                            get: { state.fullName },
+                            get: { self.vm.state.registerState.fullName },
                             set: { newValue in
                                 vm.accept(intent: FeatureAuthIntentOnFullNameChange(fullName: newValue))
                             }
                         ),
-                        showError: state.isFullNameValid == false
+                        showError: state.isFullNameValid == false && state.showFieldError
                     )
 
                     InputField(
                         placeholder: "Пароль",
                         text: Binding(
-                            get: { state.password },
+                            get: { self.vm.state.registerState.password },
                             set: { newValue in
                                 vm.accept(intent: FeatureAuthIntentOnPasswordChange(password: newValue))
                             }
                         ),
                         isSecure: true,
-                        showError: state.isPasswordValid == false
+                        showError: state.isPasswordValid == false && state.showFieldError
                     )
 
                     InputField(
                         placeholder: "Подтверждение пароля",
                         text: Binding(
-                            get: { state.passwordConfirmation },
+                            get: { self.vm.state.registerState.passwordConfirmation },
                             set: { newValue in
                                 vm.accept(intent: FeatureAuthIntentOnPasswordConfirmationChange(passwordConfirmation: newValue))
                             }
                         ),
                         isSecure: true,
-                        showError: state.isPasswordConfirmationValid == false
+                        showError: state.isPasswordConfirmationValid == false && state.showFieldError
                     )
-
-//                    InputField(placeholder: "Логин", text: $viewModel.username)
-//                    InputField(placeholder: "Эл. почта", text: $viewModel.email)
-//                    InputField(placeholder: "Номер телефона", text: $viewModel.phone)
-//                    InputField(placeholder: "Полное имя", text: $viewModel.fullName)
-//                    InputField(placeholder: "Пароль", text: $viewModel.password, isSecure: true)
-//                    InputField(placeholder: "Подтверждение пароля", text: $viewModel.confirmPassword, isSecure: true)
 
                     switch state.error {
                     case .field:
@@ -115,7 +108,7 @@ struct RegistrationView: View {
                     }
 
                     Button("Войти в аккаунт") {
-                        dismiss()
+                        vm.accept(intent: FeatureAuthIntentReturnToSignIn())
                     }
                     .foregroundColor(Color("PrimaryColor"))
                 }

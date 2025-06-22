@@ -14,11 +14,17 @@ struct AuthView: View {
     @StateObject var vm = MviViewModelWrapper(vm: ViewModelProvider.shared.getAuthViewModel())
     
     var body: some View {
-        switch vm.state.currentForm {
-        case .login:
-            LoginView(vm: vm)
-        case .registration:
-            RegistrationView(vm: vm)
+        ZStack {
+            switch vm.state.currentForm {
+            case .login:
+                LoginView(vm: vm)
+            case .registration:
+                RegistrationView(vm: vm)                    
+            }
         }
+        .task {
+            await vm.activate()
+        }
+        
     }
 }

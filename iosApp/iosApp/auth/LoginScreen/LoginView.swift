@@ -15,14 +15,18 @@ struct LoginView: View {
                 .padding()
             
             VStack(spacing: 16) {
+            
+                let loginBinding = Binding<String>(
+                    get: {
+                        return self.vm.state.loginState.username
+                    },
+                    set: { newValue in
+                        vm.accept(intent: FeatureAuthIntentOnUsernameChange(username: newValue))
+                    }
+                )
                 InputField(
                     placeholder: "Логин",
-                    text: Binding(
-                        get: { state.username },
-                        set: { newValue in
-                            vm.accept(intent: FeatureAuthIntentOnUsernameChange(username: newValue))
-                        }
-                    ),
+                    text: loginBinding,
                     isSecure: false,
                     showError: state.error != nil
                 )
@@ -30,7 +34,7 @@ struct LoginView: View {
                 InputField(
                     placeholder: "Пароль",
                     text: Binding(
-                        get: { state.password },
+                        get: { self.vm.state.loginState.password },
                         set: { newValue in
                             vm.accept(intent: FeatureAuthIntentOnPasswordChange(password: newValue))
                         }
@@ -54,8 +58,9 @@ struct LoginView: View {
                     vm.accept(intent: FeatureAuthIntentOnLogin())
                 }
 
-                NavigationLink("Создать аккаунт", destination: RegistrationView(vm: vm))
-                    .foregroundColor(Color("PrimaryColor"))
+                Button("Создать аккаунт") {
+                    vm.accept(intent: FeatureAuthIntentOnCreateAccount())
+                }
             }
             .padding()
             .background(Color(UIColor.systemGray6))

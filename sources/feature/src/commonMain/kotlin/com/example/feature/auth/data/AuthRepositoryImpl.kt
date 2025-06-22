@@ -112,7 +112,7 @@ class AuthRepositoryImpl(
         val rawPayload = token.split(".")[1]
 
         val payloadMap: JsonObject = Json.decodeFromString(
-            Base64.decode(rawPayload).decodeToString()
+            Base64.withPadding(Base64.PaddingOption.ABSENT).decode(rawPayload).decodeToString()
         )
 
         return payloadMap["exp"]?.jsonPrimitive?.content?.toLongOrNull()?.let {

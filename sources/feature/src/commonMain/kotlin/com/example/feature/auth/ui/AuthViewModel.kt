@@ -53,8 +53,8 @@ class AuthViewModel(
                 loginState = state.loginState.copy(error = null),
             )
             is AuthIntent.ShowError -> state.copy(
-                loginState = state.loginState.copy(error = intent.error),
-                registerState = state.registerState.copy(error = intent.error)
+                loginState = state.loginState.copy(error = intent.error, showFieldError = true),
+                registerState = state.registerState.copy(error = intent.error, showFieldError = true)
             )
             else -> state
         }
