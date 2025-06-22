@@ -8,7 +8,7 @@ data class AuthState(
     val currentForm: Form = Form.LOGIN
 )
 
-enum class Form { LOGIN, REGISTER }
+enum class Form { LOGIN, REGISTRATION }
 
 data class LoginState(
     val username: String = "",

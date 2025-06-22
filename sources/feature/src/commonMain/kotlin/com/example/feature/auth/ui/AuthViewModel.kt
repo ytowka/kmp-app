@@ -24,7 +24,7 @@ class AuthViewModel(
     override fun reduce(state: AuthState, intent: AuthIntent): AuthState {
         return when(intent){
             AuthIntent.OnCreateAccount -> state.copy(
-                currentForm = Form.REGISTER,
+                currentForm = Form.REGISTRATION,
                 registerState = state.registerState.copy(error = null),
                 loginState = state.loginState.copy(error = null),
             )

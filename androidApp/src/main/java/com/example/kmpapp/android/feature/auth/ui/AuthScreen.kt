@@ -105,7 +105,7 @@ fun AuthScreen(
                     loginState = state.loginState,
                     callback = loginCallback
                 )
-                Form.REGISTER -> RegisterForm(
+                Form.REGISTRATION -> RegisterForm(
                     registerState = state.registerState,
                     callback = registerCallback
                 )
