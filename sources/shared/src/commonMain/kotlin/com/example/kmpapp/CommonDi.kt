@@ -3,9 +3,9 @@ package com.example.kmpapp
 
 import com.example.data.DataModule
 import com.example.feature.FeatureModule
-import com.example.feature.root.RootViewModel
 import com.example.network.NetworkModule
-import org.koin.core.Koin
+import io.github.aakira.napier.DebugAntilog
+import io.github.aakira.napier.Napier
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
@@ -16,6 +16,7 @@ object CommonDi {
     fun initDi(
         appDeclaration: KoinAppDeclaration = {},
     ): KoinApplication {
+        Napier.base(DebugAntilog())
         return startKoin {
             appDeclaration()
             modules(

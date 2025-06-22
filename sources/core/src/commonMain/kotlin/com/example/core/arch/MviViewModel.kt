@@ -48,7 +48,7 @@ abstract class MviViewModel<Intent, State, SideEffect> : ViewModel(), IMviViewMo
         log("processIntent $intent")
         _state.update { currentState ->
             val newState = reduce(currentState, intent)
-            log("reduced\n--$currentState\n++$newState")
+            log("reduced\n\t-$currentState\n\t+$newState")
             postProcess(currentState, newState, intent)
             newState
         }

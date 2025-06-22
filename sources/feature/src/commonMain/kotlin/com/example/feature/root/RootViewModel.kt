@@ -16,6 +16,7 @@ class RootViewModel(
 
     override suspend fun loadData() {
         val currentUser =  flow {
+            kotlinx.coroutines.delay(1000)
             emit(getMeUseCase().getOrNull())
         }
         val isLoggedIn = isLoggedInUseCase().map { it.getOrDefault(false) }

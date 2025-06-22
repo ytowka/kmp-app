@@ -10,18 +10,19 @@ struct ContentView: View {
 }
 
 struct RootScreen: View {
-    @StateObject var vm = GenericMviViewModelWrapper(vm: KoinHelper().getRootViewModel())
+    @StateObject var vm = MviViewModelWrapper(vm: ViewModelProvider.shared.getRootViewModel())
 
     var body: some View {
         VStack {
-            if let state = vm.state as? RootState.Success {
-                Text("User: \(state.currentUser?.name ?? "-")")
+            if let state = vm.state as? FeatureRootStateSuccess {
+                if let currentUser = state.currentUser {
+                    Text("User: \(currentUser.fullName)")
+                } else {
+                    Text("No user")
+                }
             } else {
                 Text("Loading...")
             }
-        }
-        .onAppear {
-            vm.sendIntent(RootIntent.Init(isLoggedIn: true, currentUser: nil))
         }
     }
 }
