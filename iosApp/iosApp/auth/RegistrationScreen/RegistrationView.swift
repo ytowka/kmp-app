@@ -3,7 +3,7 @@ import PhotosUI
 import shared
 
 struct RegistrationView: View {
-    let vm: MviViewModelWrapper<FeatureAuthIntent, FeatureAuthState, FeatureAuthSideEffect>
+    @StateObject var vm: MviViewModelWrapper<FeatureAuthIntent, FeatureAuthState, FeatureAuthSideEffect>
     @State private var showImagePicker = false
     @State private var pickerItem: PhotosPickerItem? = nil
     @State var avatar: UIImage?
@@ -29,7 +29,7 @@ struct RegistrationView: View {
                     InputField(
                         placeholder: "Логин",
                         text: Binding(
-                            get: { self.vm.state.registerState.username },
+                            get: { state.username },
                             set: { newValue in
                                 vm.accept(intent: FeatureAuthIntentOnUsernameChange(username: newValue))
                             }
@@ -40,7 +40,7 @@ struct RegistrationView: View {
                     InputField(
                         placeholder: "Эл. почта",
                         text: Binding(
-                            get: { self.vm.state.registerState.email },
+                            get: { state.email },
                             set: { newValue in
                                 vm.accept(intent: FeatureAuthIntentOnEmailChange(email: newValue))
                             }
@@ -51,7 +51,7 @@ struct RegistrationView: View {
                     InputField(
                         placeholder: "Номер телефона",
                         text: Binding(
-                            get: { self.vm.state.registerState.phone },
+                            get: { state.phone },
                             set: { newValue in
                                 vm.accept(intent: FeatureAuthIntentOnPhoneChange(phone: newValue))
                             }
@@ -62,7 +62,7 @@ struct RegistrationView: View {
                     InputField(
                         placeholder: "Полное имя",
                         text: Binding(
-                            get: { self.vm.state.registerState.fullName },
+                            get: { state.fullName },
                             set: { newValue in
                                 vm.accept(intent: FeatureAuthIntentOnFullNameChange(fullName: newValue))
                             }
@@ -73,7 +73,7 @@ struct RegistrationView: View {
                     InputField(
                         placeholder: "Пароль",
                         text: Binding(
-                            get: { self.vm.state.registerState.password },
+                            get: { state.password },
                             set: { newValue in
                                 vm.accept(intent: FeatureAuthIntentOnPasswordChange(password: newValue))
                             }
@@ -85,7 +85,7 @@ struct RegistrationView: View {
                     InputField(
                         placeholder: "Подтверждение пароля",
                         text: Binding(
-                            get: { self.vm.state.registerState.passwordConfirmation },
+                            get: { state.passwordConfirmation },
                             set: { newValue in
                                 vm.accept(intent: FeatureAuthIntentOnPasswordConfirmationChange(passwordConfirmation: newValue))
                             }
