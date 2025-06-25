@@ -3,7 +3,7 @@ import PhotosUI
 import shared
 
 struct RegistrationView: View {
-    @StateObject var vm: MviViewModelWrapper<FeatureAuthIntent, FeatureAuthState, FeatureAuthSideEffect>
+    @StateObject var vm: MviViewModelWrapper<AuthIntent, AuthState, AuthSideEffect>
     @State private var showImagePicker = false
     @State private var pickerItem: PhotosPickerItem? = nil
     @State var avatar: UIImage?
@@ -31,7 +31,7 @@ struct RegistrationView: View {
                         text: Binding(
                             get: { state.username },
                             set: { newValue in
-                                vm.accept(intent: FeatureAuthIntentOnUsernameChange(username: newValue))
+                                vm.accept(intent: AuthIntentOnUsernameChange(username: newValue))
                             }
                         ),
                         showError: vm.state.registerState.isUsernameValid == false && vm.state.registerState.showFieldError
@@ -42,7 +42,7 @@ struct RegistrationView: View {
                         text: Binding(
                             get: { state.email },
                             set: { newValue in
-                                vm.accept(intent: FeatureAuthIntentOnEmailChange(email: newValue))
+                                vm.accept(intent: AuthIntentOnEmailChange(email: newValue))
                             }
                         ),
                         showError: state.isEmailValid == false && state.showFieldError
@@ -53,7 +53,7 @@ struct RegistrationView: View {
                         text: Binding(
                             get: { state.phone },
                             set: { newValue in
-                                vm.accept(intent: FeatureAuthIntentOnPhoneChange(phone: newValue))
+                                vm.accept(intent: AuthIntentOnPhoneChange(phone: newValue))
                             }
                         ),
                         showError: false
@@ -64,7 +64,7 @@ struct RegistrationView: View {
                         text: Binding(
                             get: { state.fullName },
                             set: { newValue in
-                                vm.accept(intent: FeatureAuthIntentOnFullNameChange(fullName: newValue))
+                                vm.accept(intent: AuthIntentOnFullNameChange(fullName: newValue))
                             }
                         ),
                         showError: state.isFullNameValid == false && state.showFieldError
@@ -75,7 +75,7 @@ struct RegistrationView: View {
                         text: Binding(
                             get: { state.password },
                             set: { newValue in
-                                vm.accept(intent: FeatureAuthIntentOnPasswordChange(password: newValue))
+                                vm.accept(intent: AuthIntentOnPasswordChange(password: newValue))
                             }
                         ),
                         isSecure: true,
@@ -87,7 +87,7 @@ struct RegistrationView: View {
                         text: Binding(
                             get: { state.passwordConfirmation },
                             set: { newValue in
-                                vm.accept(intent: FeatureAuthIntentOnPasswordConfirmationChange(passwordConfirmation: newValue))
+                                vm.accept(intent: AuthIntentOnPasswordConfirmationChange(passwordConfirmation: newValue))
                             }
                         ),
                         isSecure: true,
@@ -103,11 +103,11 @@ struct RegistrationView: View {
                     }
 
                     PrimaryButton(title: "Создать аккаунт") {
-                        vm.accept(intent: FeatureAuthIntentOnRegister())
+                        vm.accept(intent: AuthIntentOnRegister())
                     }
 
                     Button("Войти в аккаунт") {
-                        vm.accept(intent: FeatureAuthIntentReturnToSignIn())
+                        vm.accept(intent: AuthIntentReturnToSignIn())
                     }
                     .foregroundColor(Color("PrimaryColor"))
                 }

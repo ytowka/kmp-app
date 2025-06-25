@@ -10,7 +10,7 @@ import SwiftUI
 import shared
 
 struct UserInfoView: View {
-    @StateObject var wrapper: MviViewModelWrapper<FeatureUserInfoIntent, FeatureUserInfoState, FeatureUserInfoSideEffect>
+    @StateObject var wrapper: MviViewModelWrapper<UserInfoIntent, UserInfoState, UserInfoSideEffect>
 
     var body: some View {
         let state = wrapper.state

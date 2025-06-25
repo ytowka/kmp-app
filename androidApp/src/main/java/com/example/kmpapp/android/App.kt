@@ -2,18 +2,18 @@ package com.example.kmpapp.android
 
 import android.app.Application
 import com.example.kmpapp.CommonDi
-import io.github.aakira.napier.DebugAntilog
-import io.github.aakira.napier.Napier
+import com.example.core.analytics.AnalyticHolder
+import com.example.kmpapp.android.analytics.AnalyticsImpl
+import com.google.firebase.Firebase
+import com.google.firebase.analytics.analytics
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.logger.Level
 
 class App : Application(){
 
     override fun onCreate() {
         super.onCreate()
+        AnalyticHolder.analytics = AnalyticsImpl(Firebase.analytics)
         CommonDi.initDi {
-            androidLogger(Level.DEBUG)
             androidContext(applicationContext)
         }
     }

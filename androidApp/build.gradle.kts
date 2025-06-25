@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.googleService)
     alias(libs.plugins.crashlytics)
 }
 
@@ -50,5 +51,6 @@ dependencies {
     implementation(libs.coil.network.core)
     implementation(libs.navigation.compose)
     implementation(libs.napier)
+    implementation(libs.firebase.analytics)
     debugImplementation(libs.compose.ui.tooling)
 }
