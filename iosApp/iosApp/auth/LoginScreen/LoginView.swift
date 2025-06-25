@@ -2,7 +2,7 @@ import SwiftUI
 import shared
 
 struct LoginView: View {
-    let vm: MviViewModelWrapper<FeatureAuthIntent, FeatureAuthState, FeatureAuthSideEffect>
+    @StateObject var vm: MviViewModelWrapper<FeatureAuthIntent, FeatureAuthState, FeatureAuthSideEffect>
 
     var body: some View {
         let state = vm.state.loginState
@@ -17,9 +17,7 @@ struct LoginView: View {
             VStack(spacing: 16) {
             
                 let loginBinding = Binding<String>(
-                    get: {
-                        return self.vm.state.loginState.username
-                    },
+                    get: { state.username },
                     set: { newValue in
                         vm.accept(intent: FeatureAuthIntentOnUsernameChange(username: newValue))
                     }
@@ -34,7 +32,7 @@ struct LoginView: View {
                 InputField(
                     placeholder: "Пароль",
                     text: Binding(
-                        get: { self.vm.state.loginState.password },
+                        get: { state.password },
                         set: { newValue in
                             vm.accept(intent: FeatureAuthIntentOnPasswordChange(password: newValue))
                         }
