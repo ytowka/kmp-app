@@ -24,7 +24,7 @@ struct RegistrationView: View {
                         image: $avatar,
                         isPickerPresented: $showImagePicker
                     )
-                    
+
 
                     InputField(
                         placeholder: "Логин",
@@ -121,15 +121,24 @@ struct RegistrationView: View {
         }
         .background(Color(UIColor.systemGray5).opacity(0.1).ignoresSafeArea())
         .photosPicker(isPresented: $showImagePicker, selection: $pickerItem)
-//        .onChange(of: pickerItem) { oldItem, newItem in
-//            guard let item = newItem else { return }
-//            Task {
-//                if let data = try? await item.loadTransferable(type: Data.self),
-//                   let uiImage = UIImage(data: data) {
-//                    viewModel.avatar = uiImage
-//                }
-//            }
-//        }
+        .onChange(of: pickerItem) { newItem in
+            guard let item = newItem else { return }
+            Task {
+                if let data = try? await item.loadTransferable(type: Data.self),
+                   let uiImage = UIImage(data: data) {
+                    avatar = uiImage
 
+                    let filename = UUID().uuidString + ".jpg"
+                    let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent(filename)
+                    do {
+                        try data.write(to: tempUrl)
+                        print("✅ Image saved: \(tempUrl)")
+                        vm.accept(intent: AuthIntentOnImagePicked(uri: tempUrl.absoluteString))
+                    } catch {
+                        print("❌ Failed to save image: \(error)")
+                    }
+                }
+            }
+        }
     }
 }

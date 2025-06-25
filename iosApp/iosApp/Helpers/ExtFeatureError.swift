@@ -9,7 +9,7 @@
 import Foundation
 import shared
 
-extension FeatureError {
+extension shared.Error {
     var localizedMessage: String {
         switch self {
         case .field: return "Проверьте поля"

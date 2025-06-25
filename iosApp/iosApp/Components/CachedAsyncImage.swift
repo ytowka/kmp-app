@@ -62,6 +62,7 @@ struct CachedAsyncImage: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: contentMode)
+                    .clipped()
             } else if loadFailed {
                 errorPlaceholder()
             } else {

@@ -11,7 +11,7 @@ struct AvatarImageView: View {
                 errorPlaceholder: {
                     ErrorPlaceholderImageView()
                 },
-                contentMode: .fit
+                contentMode: .fill
             )
         } else {
             placeholderView
