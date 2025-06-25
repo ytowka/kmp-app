@@ -9,7 +9,7 @@ struct ProfileView: View {
 
     var body: some View {
         VStack {
-            ProfileHeaderView(user: viewModel.user)
+//            ProfileHeaderView(user: viewModel.user)
 
             ScrollView {
                 VStack(spacing: 12) {

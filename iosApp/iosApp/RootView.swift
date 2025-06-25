@@ -17,7 +17,8 @@ struct RootScreen: View {
                     }
                 }
             }
-        }.task {
+        }
+        .task {
             await vm.activateSideEffects()
         }
         .task {

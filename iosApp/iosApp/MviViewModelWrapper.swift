@@ -19,21 +19,21 @@ class MviViewModelWrapper<Intent: AnyObject, State: AnyObject, SideEffect: AnyOb
         self.vm = vm
         state = vm.initialState!
     }
-    
+
     @MainActor
     func activate() async {
         for await state in vm.state {
             self.state = state!
         }
     }
-    
+
     @MainActor
     func activateSideEffects() async {
         for await sideEffect in vm.sideEffect {
-            
+
         }
     }
-    
+
     func accept(intent: Intent) {
         vm.accept(intent: intent)
     }

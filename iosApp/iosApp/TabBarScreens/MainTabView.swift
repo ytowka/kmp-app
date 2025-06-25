@@ -1,8 +1,12 @@
 import SwiftUI
+import shared
 
 struct MainTabView: View {
     @Namespace var tabAnimation
     @State private var selectedTab: TabItem = .main
+    @StateObject private var profileWrapper = MviViewModelWrapper(
+        vm: ViewModelProvider.shared.getUserInfoViewModel(userId: "")
+    )
 
     var body: some View {
         NavigationStack {
@@ -16,9 +20,11 @@ struct MainTabView: View {
                         UsersView()
                             .id("usersView")
                     case .profile:
-                        let user = UserModel(id: "555", username: "kerikg", fullName: "Kirill Abramov", avatarUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVzdxX6cZ5CrZJl1rE6FvzVT5_GFb11AZ9Cg&s")
-                        ProfileView(user: user)
-                            .id("profileView")
+                        UserInfoView(wrapper: profileWrapper)
+                        .id("userInfo")
+                        //                        let user = UserModel(id: "555", username: "kerikg", fullName: "Kirill Abramov", avatarUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVzdxX6cZ5CrZJl1rE6FvzVT5_GFb11AZ9Cg&s")
+                        //                        ProfileView(user: user)
+                        //                            .id("profileView")
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
