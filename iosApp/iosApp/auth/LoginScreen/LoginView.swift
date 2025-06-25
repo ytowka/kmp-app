@@ -5,7 +5,7 @@ struct LoginView: View {
     @StateObject var vm: MviViewModelWrapper<FeatureAuthIntent, FeatureAuthState, FeatureAuthSideEffect>
 
     var body: some View {
-//        let state = vm.state.loginState
+        let state = vm.state.loginState
         VStack {
             Spacer()
             Text("Вход")
