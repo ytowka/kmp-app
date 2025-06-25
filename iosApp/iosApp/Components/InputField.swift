@@ -10,8 +10,12 @@ struct InputField: View {
         Group {
             if isSecure {
                 SecureField(placeholder, text: $text)
+                    .autocorrectionDisabled()
+                    .textInputAutocapitalization(.never)
             } else {
                 TextField(placeholder, text: $text)
+                    .autocorrectionDisabled()
+                    .textInputAutocapitalization(.never)
             }
         }
         .padding()

@@ -94,13 +94,12 @@ struct RegistrationView: View {
                         showError: state.isPasswordConfirmationValid == false && state.showFieldError
                     )
 
-                    switch state.error {
-                    case .field:
-                        Text("Проверьте поля")
-                            .foregroundColor(.red)
-                            .font(.caption)
-                    default:
-                        EmptyView()
+                    Group {
+                        if let error = state.error {
+                            Text(error.localizedMessage)
+                                .foregroundColor(.red)
+                                .font(.caption)
+                        }
                     }
 
                     PrimaryButton(title: "Создать аккаунт") {

@@ -53,6 +53,7 @@
 		75DF1B262DFDA84300F2FDF4 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 75DF1B252DFDA84300F2FDF4 /* FirebaseAnalytics */; };
 		75DF1B282DFDA84300F2FDF4 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 75DF1B272DFDA84300F2FDF4 /* FirebaseCrashlytics */; };
 		BAEA93C12E0C5BCE00DF7BB6 /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAEA93C02E0C5BC900DF7BB6 /* UserInfoView.swift */; };
+		BAEA93C32E0C748E00DF7BB6 /* ExtFeatureError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAEA93C22E0C748600DF7BB6 /* ExtFeatureError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -115,6 +116,7 @@
 		759673C32E0854A10019CD42 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		75DF1B222DFDA7AD00F2FDF4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BAEA93C02E0C5BC900DF7BB6 /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
+		BAEA93C22E0C748600DF7BB6 /* ExtFeatureError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtFeatureError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +188,7 @@
 		7596736F2E0848660019CD42 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				BAEA93C22E0C748600DF7BB6 /* ExtFeatureError.swift */,
 				7596736C2E0848660019CD42 /* ExtView.swift */,
 				7596736D2E0848660019CD42 /* ExtColor.swift */,
 				7596736E2E0848660019CD42 /* ImageCache.swift */,
@@ -443,6 +446,7 @@
 				759673B52E0848660019CD42 /* ContentView.swift in Sources */,
 				759673B62E0848660019CD42 /* ThemeCardView.swift in Sources */,
 				759673B72E0848660019CD42 /* ReviewModel.swift in Sources */,
+				BAEA93C32E0C748E00DF7BB6 /* ExtFeatureError.swift in Sources */,
 				759673B82E0848660019CD42 /* LoginView.swift in Sources */,
 				759673B92E0848660019CD42 /* TabItem.swift in Sources */,
 				759673C22E084B110019CD42 /* AuthView.swift in Sources */,

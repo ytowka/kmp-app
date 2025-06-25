@@ -26,7 +26,7 @@ struct LoginView: View {
                     placeholder: "Логин",
                     text: loginBinding,
                     isSecure: false,
-                    showError: self.vm.state.loginState.isUsernameValid == false && self.vm.state.loginState.showFieldError
+                    showError: state.isUsernameValid == false && state.showFieldError
                 )
 
                 InputField(
@@ -38,22 +38,16 @@ struct LoginView: View {
                         }
                     ),
                     isSecure: true,
-                    showError: self.vm.state.loginState.isPasswordValid == false && self.vm.state.loginState.showFieldError
+                    showError: state.isPasswordValid == false && state.showFieldError
                 )
 
-                if let error = self.vm.state.loginState.error {
-                    Text("\(error)")
+                Group {
+                    if let error = state.error {
+                        Text(error.localizedMessage)
+                            .foregroundColor(.red)
+                            .font(.caption)
+                    }
                 }
-
-//                switch state.error {
-//                case .field:
-//                    Text("Проверьте поля")
-//                        .foregroundColor(.red)
-//                        .font(.caption)
-//                default:
-//                    EmptyView()
-//                }
-        
 
                 PrimaryButton(title: "Войти") {
                     vm.accept(intent: FeatureAuthIntentOnLogin())
