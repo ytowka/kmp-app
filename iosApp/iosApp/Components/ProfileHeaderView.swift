@@ -1,7 +1,8 @@
 import SwiftUI
+import shared
 
 struct ProfileHeaderView: View {
-    let user: UserModel
+    let user: FeatureUserModel
 
     var body: some View {
         HStack(spacing: 12) {
@@ -10,14 +11,13 @@ struct ProfileHeaderView: View {
                 .clipShape(Circle())
 
             VStack(alignment: .leading, spacing: 4) {
-                Text("@\(user.username)")
+                Text("@\(user.login)")
                     .font(.headline)
                     .foregroundColor(.black)
-                if let fullName = user.fullName {
-                    Text(fullName)
-                        .font(.subheadline)
-                        .foregroundColor(.black)
-                }
+                
+                Text(user.fullName)
+                    .font(.subheadline)
+                    .foregroundColor(.black)
             }
 
             Spacer()

@@ -10,30 +10,54 @@ import Foundation
 import shared
 
 class MviViewModelWrapper<Intent: AnyObject, State: AnyObject, SideEffect: AnyObject>: ObservableObject {
-    
+
+    //    private let vm: CoreMviViewModel<Intent, State, SideEffect>
+    //
+    //        @Published var state: State
+    //
+    //        init(vm: CoreMviViewModel<Intent, State, SideEffect>) {
+    //            self.vm = vm
+    //            self.state = vm.initialState!
+    //
+    //            Task {
+    //                for await state in vm.state {
+    //                    self.state = state!
+    //                }
+    //            }
+    //
+    //            // Optional: handle side effects if needed
+    //            Task {
+    //                for await _ in vm.sideEffect {}
+    //            }
+    //        }
+    //
+    //        func accept(intent: Intent) {
+    //            vm.accept(intent: intent)
+    //        }
+
     private let vm: CoreMviViewModel<Intent, State, SideEffect>
-    
+
     @Published var state: State
-    
+
     init(vm: CoreMviViewModel<Intent, State, SideEffect>) {
         self.vm = vm
         state = vm.initialState!
     }
-    
+
     @MainActor
     func activate() async {
         for await state in vm.state {
             self.state = state!
         }
     }
-    
+
     @MainActor
     func activateSideEffects() async {
         for await sideEffect in vm.sideEffect {
-            
+
         }
     }
-    
+
     func accept(intent: Intent) {
         vm.accept(intent: intent)
     }

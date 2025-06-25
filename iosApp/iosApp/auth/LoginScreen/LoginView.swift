@@ -5,7 +5,7 @@ struct LoginView: View {
     let vm: MviViewModelWrapper<FeatureAuthIntent, FeatureAuthState, FeatureAuthSideEffect>
 
     var body: some View {
-        let state = vm.state.loginState
+//        let state = vm.state.loginState
         VStack {
             Spacer()
             Text("Вход")
@@ -28,7 +28,7 @@ struct LoginView: View {
                     placeholder: "Логин",
                     text: loginBinding,
                     isSecure: false,
-                    showError: state.error != nil
+                    showError: self.vm.state.loginState.isUsernameValid == false && self.vm.state.loginState.showFieldError
                 )
 
                 InputField(
@@ -40,18 +40,21 @@ struct LoginView: View {
                         }
                     ),
                     isSecure: true,
-                    showError: state.error != nil
+                    showError: self.vm.state.loginState.isPasswordValid == false && self.vm.state.loginState.showFieldError
                 )
 
-
-                switch state.error {
-                case .field:
-                    Text("Проверьте поля")
-                        .foregroundColor(.red)
-                        .font(.caption)
-                default:
-                    EmptyView()
+                if let error = self.vm.state.loginState.error {
+                    Text("\(error)")
                 }
+
+//                switch state.error {
+//                case .field:
+//                    Text("Проверьте поля")
+//                        .foregroundColor(.red)
+//                        .font(.caption)
+//                default:
+//                    EmptyView()
+//                }
         
 
                 PrimaryButton(title: "Войти") {
