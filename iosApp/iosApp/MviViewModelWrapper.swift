@@ -11,11 +11,11 @@ import shared
 
 class MviViewModelWrapper<Intent: AnyObject, State: AnyObject, SideEffect: AnyObject>: ObservableObject {
     
-    private let vm: CoreMviViewModel<Intent, State, SideEffect>
+    private let vm: MviViewModel<Intent, State, SideEffect>
     
     @Published var state: State
     
-    init(vm: CoreMviViewModel<Intent, State, SideEffect>) {
+    init(vm: MviViewModel<Intent, State, SideEffect>) {
         self.vm = vm
         state = vm.initialState!
     }

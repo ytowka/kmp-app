@@ -2,7 +2,7 @@ import SwiftUI
 import shared
 
 struct LoginView: View {
-    @StateObject var vm: MviViewModelWrapper<FeatureAuthIntent, FeatureAuthState, FeatureAuthSideEffect>
+    @StateObject var vm: MviViewModelWrapper<AuthIntent, AuthState, AuthSideEffect>
 
     var body: some View {
         let state = vm.state.loginState
@@ -19,7 +19,7 @@ struct LoginView: View {
                 let loginBinding = Binding<String>(
                     get: { state.username },
                     set: { newValue in
-                        vm.accept(intent: FeatureAuthIntentOnUsernameChange(username: newValue))
+                        vm.accept(intent: AuthIntentOnUsernameChange(username: newValue))
                     }
                 )
                 InputField(
@@ -34,7 +34,7 @@ struct LoginView: View {
                     text: Binding(
                         get: { state.password },
                         set: { newValue in
-                            vm.accept(intent: FeatureAuthIntentOnPasswordChange(password: newValue))
+                            vm.accept(intent: AuthIntentOnPasswordChange(password: newValue))
                         }
                     ),
                     isSecure: true,
@@ -53,11 +53,11 @@ struct LoginView: View {
         
 
                 PrimaryButton(title: "Войти") {
-                    vm.accept(intent: FeatureAuthIntentOnLogin())
+                    vm.accept(intent: AuthIntentOnLogin())
                 }
 
                 Button("Создать аккаунт") {
-                    vm.accept(intent: FeatureAuthIntentOnCreateAccount())
+                    vm.accept(intent: AuthIntentOnCreateAccount())
                 }
             }
             .padding()
