@@ -9,12 +9,13 @@
 import shared
 import FirebaseAnalytics
 
-class AnalyticsImpl : IAnalytics {
+class AnalyticsImpl : BaseAnalytics {
     
-    func sendEvent(location: String, event: String, params: [String : Any]) {
-        var allParams = params
-        allParams["location"] = location
-
-        Analytics.logEvent(event, parameters: allParams)
+    override init() {
+        super.init()
+    }
+    
+    override func sendEventToServer(event: String, params: [String : Any]) {
+        Analytics.logEvent(event, parameters: params)
     }
 }
