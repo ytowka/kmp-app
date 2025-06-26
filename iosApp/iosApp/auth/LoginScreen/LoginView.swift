@@ -56,6 +56,7 @@ struct LoginView: View {
                 Button("Создать аккаунт") {
                     vm.accept(intent: AuthIntentOnCreateAccount())
                 }
+                .foregroundColor(Color("PrimaryColor"))
             }
             .padding()
             .background(Color(UIColor.systemGray6))

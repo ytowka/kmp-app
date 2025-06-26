@@ -13,6 +13,7 @@ struct UserRowView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("@\(user.login)")
                     .font(.subheadline)
+                    .foregroundColor(.black)
                     .fontWeight(.medium)
 
                 Text("\(user.id)")
