@@ -8,23 +8,30 @@ struct MainTabView: View {
         vm: ViewModelProvider.shared.getUserInfoViewModel(userId: "")
     )
 
+    @StateObject private var topicWrapper = MviViewModelWrapper(
+        vm: ViewModelProvider.shared.getTopicViewModel()
+    )
+
+    @StateObject private var userListWrapper = MviViewModelWrapper(
+        vm: ViewModelProvider.shared.getUserListViewModel()
+    )
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
                 ZStack {
                     switch selectedTab {
                     case .main:
-                        ThemesView()
-                            .id("themesView")
+                        TopicView(wrapper: topicWrapper)
+                            .id("topicView")
+//                        ThemesView()
+//                            .id("themesView")
                     case .users:
-                        UsersView()
-                            .id("usersView")
+                        UserListView(wrapper: userListWrapper)
+                            .id("userListView")
                     case .profile:
                         UserInfoView(wrapper: profileWrapper)
-                        .id("userInfo")
-                        //                        let user = UserModel(id: "555", username: "kerikg", fullName: "Kirill Abramov", avatarUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVzdxX6cZ5CrZJl1rE6FvzVT5_GFb11AZ9Cg&s")
-                        //                        ProfileView(user: user)
-                        //                            .id("profileView")
+                            .id("userInfoView")
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -49,32 +56,19 @@ struct MainTabView: View {
                 //            .background(Color.white.ignoresSafeArea(edges: .bottom))
             }
         }
+        .onAppear {
+            setupNavigationBarAppearance()
+        }
+    }
 
+    func setupNavigationBarAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor(named: "NavigationBarColor")
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
+
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
     }
 }
-
-
-//struct MainTabView: View {
-//    var body: some View {
-//        TabView {
-//            ThemesView()
-//                .tabItem {
-//                    Image(systemName: "list.bullet")
-//                    Text("Главная")
-//                }
-//
-//            Text("Пользователи")
-//                .tabItem {
-//                    Image(systemName: "person.2.fill")
-//                    Text("Пользователи")
-//                }
-//
-//            Text("Профиль")
-//                .tabItem {
-//                    Image(systemName: "person.crop.circle")
-//                    Text("Профиль")
-//                }
-//        }
-//        .accentColor(Color.white)
-//    }
-//}

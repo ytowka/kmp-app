@@ -1,7 +1,8 @@
 import SwiftUI
+import shared
 
 struct UserRowView: View {
-    let user: UserModel
+    let user: shared.UserModel
 
     var body: some View {
         HStack(spacing: 12) {
@@ -10,11 +11,11 @@ struct UserRowView: View {
                 .clipShape(Circle())
 
             VStack(alignment: .leading, spacing: 4) {
-                Text("@\(user.username)")
+                Text("@\(user.login)")
                     .font(.subheadline)
                     .fontWeight(.medium)
 
-                Text(user.id)
+                Text("\(user.id)")
                     .font(.caption)
                     .foregroundColor(.gray)
                     .lineLimit(1)

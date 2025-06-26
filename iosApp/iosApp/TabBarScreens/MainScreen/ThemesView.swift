@@ -8,7 +8,7 @@ struct ThemesView: View {
             VStack(alignment: .leading, spacing: 24) {
                 ForEach(viewModel.themes) { theme in
                     NavigationLink(destination: ContentView(theme: theme)) {
-                        ThemeCardView(theme: theme)
+//                        TopicCardView(theme: theme)
                     }
                 }
                 //                ForEach(viewModel.themes) { theme in
