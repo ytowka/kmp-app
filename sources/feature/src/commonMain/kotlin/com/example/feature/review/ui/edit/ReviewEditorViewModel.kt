@@ -44,16 +44,16 @@ class ReviewEditorViewModel(
             is EditReviewIntent.EditMark -> state.copy(mark = intent.mark)
             is EditReviewIntent.EditText -> state.copy(text = intent.text)
             EditReviewIntent.LoadReview -> state.copy(mode = EditReviewMode.Pending)
-            EditReviewIntent.Save -> state.copy(mode = EditReviewMode.Pending)
             is EditReviewIntent.UpdateContent -> state.copy(content = intent.content)
             is EditReviewIntent.UpdateMode -> {
-                val writtenReview = (state.mode as? EditReviewMode.Edit)?.reviewModel
+                val writtenReview = (intent.mode as? EditReviewMode.Edit)?.reviewModel
                 state.copy(
                     mode = intent.mode,
                     mark = writtenReview?.mark,
                     text = writtenReview?.text.orEmpty()
                 )
             }
+            else -> state
         }
     }
 
@@ -76,7 +76,7 @@ class ReviewEditorViewModel(
         }
     }
 
-    fun save(state: EditReviewState) {
+    private fun save(state: EditReviewState) {
         if(state.isValid){
             viewModelScope.launch {
                 val request = ReviewRequestDto(
