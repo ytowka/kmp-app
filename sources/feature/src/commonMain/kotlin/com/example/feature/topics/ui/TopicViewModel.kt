@@ -3,6 +3,7 @@ package com.example.feature.topics.ui
 import com.example.core.arch.MviViewModel
 import com.example.feature.content.domain.usecase.GetRecommendedFeedUseCase
 import com.example.feature.content.ui.toContentModel
+import com.example.feature.topics.TopicAnalytics
 import com.example.feature.topics.domain.usecase.GetTopicsUseCase
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -17,6 +18,7 @@ class TopicViewModel(
     override val initialState: TopicListState = TopicListState()
 
     override suspend fun loadData() {
+        TopicAnalytics.openScreen()
         coroutineScope {
             launch {
                 val topics = getTopicsUseCase().getOrElse { emptyList() }.map { it.toTopicModel() }

@@ -3,6 +3,7 @@ package com.example.feature.review.ui.list
 import androidx.lifecycle.viewModelScope
 import com.example.core.arch.MviViewModel
 import com.example.core.paging.PagingResponse
+import com.example.feature.review.ReviewAnalytics
 import com.example.feature.review.domain.dto.ReviewDto
 import com.example.feature.review.domain.usecase.GetReviewsByContentUseCase
 import com.example.feature.review.ui.toReviewModel
@@ -20,6 +21,7 @@ class ReviewListViewModel(
     override val initialState: ReviewListState = ReviewListState()
 
     override suspend fun loadData() {
+        ReviewAnalytics.openReviewList()
         getNextPage(initialState)
     }
 

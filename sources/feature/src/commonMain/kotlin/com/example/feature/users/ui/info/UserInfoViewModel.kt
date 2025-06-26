@@ -9,6 +9,7 @@ import com.example.feature.review.ui.toReviewModel
 import com.example.feature.users.domain.usecase.GetMatchScoreUseCase
 import com.example.feature.users.domain.usecase.GetMeUseCase
 import com.example.feature.users.domain.usecase.GetUserByIdUseCase
+import com.example.feature.users.ui.UserAnalytics
 import com.example.feature.users.ui.toUserModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -29,6 +30,7 @@ class UserInfoViewModel(
     override val initialState: UserInfoState = UserInfoState()
 
     override suspend fun loadData() {
+        UserAnalytics.openUserInfo()
         if(userId == MY_USER_ID){
             val user = getMeUseCase().getOrElse { return }
             accept(UserInfoIntent.SetUserModel(
@@ -46,11 +48,11 @@ class UserInfoViewModel(
                     )
                 }
             }
-            viewModelScope.launch {
+            /*viewModelScope.launch {
                 getMatchScoreUseCase(Uuid.parse(userId)).onSuccess { result ->
                     // TODO
                 }
-            }
+            }*/
         }
     }
 
