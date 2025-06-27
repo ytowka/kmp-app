@@ -12,4 +12,5 @@ enum AppRoute: Hashable {
     case contentList(topicId: Int64, topicName: String)
     case reviewList(contentId: Int64, contentName: String)
     case userProfile(user: shared.UserModel)
+    case reviewEditor(contentId: Int64)
 }

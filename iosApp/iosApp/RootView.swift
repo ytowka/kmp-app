@@ -156,6 +156,16 @@ struct RootView: View {
                                     vm: ViewModelProvider.shared.getUserInfoViewModel(userId: user.id.description())
                                 )
                                 UserInfoView(wrapper: vm, initialUserModel: user)
+                            case .reviewEditor(let contentId):
+                                let vm = MviViewModelWrapper(
+                                    vm: ViewModelProvider.shared.getReviewEditorViewModel(contentId: contentId)
+                                )
+                                
+                                ReviewEditorView(
+                                    wrapper: vm,
+                                    onSave: { router.pop() },
+                                    onBack: { router.pop() }
+                                )
                             }
                         }
                     }

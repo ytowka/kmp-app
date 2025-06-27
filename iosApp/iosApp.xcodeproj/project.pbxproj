@@ -55,6 +55,9 @@
 		75DF1B262DFDA84300F2FDF4 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 75DF1B252DFDA84300F2FDF4 /* FirebaseAnalytics */; };
 		75DF1B282DFDA84300F2FDF4 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 75DF1B272DFDA84300F2FDF4 /* FirebaseCrashlytics */; };
 		BA17FB9F2E0F1AA500CC945F /* MarkColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA17FB9E2E0F1A9F00CC945F /* MarkColors.swift */; };
+		BA17FBA32E0F267200CC945F /* ReviewEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA17FBA22E0F266C00CC945F /* ReviewEditorView.swift */; };
+		BA17FBA52E0F296400CC945F /* MarkPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA17FBA42E0F295C00CC945F /* MarkPicker.swift */; };
+		BA17FBA72E0F299000CC945F /* ContentPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA17FBA62E0F298C00CC945F /* ContentPreview.swift */; };
 		BAD38A2F2E0EDB4A002410B9 /* ReviewListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD38A2E2E0EDB44002410B9 /* ReviewListView.swift */; };
 		BAD38A312E0EEDB3002410B9 /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD38A302E0EEDAF002410B9 /* AppRoute.swift */; };
 		BAD38A342E0EEE0B002410B9 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD38A332E0EEE07002410B9 /* AppRouter.swift */; };
@@ -123,6 +126,9 @@
 		759673C32E0854A10019CD42 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		75DF1B222DFDA7AD00F2FDF4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BA17FB9E2E0F1A9F00CC945F /* MarkColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkColors.swift; sourceTree = "<group>"; };
+		BA17FBA22E0F266C00CC945F /* ReviewEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewEditorView.swift; sourceTree = "<group>"; };
+		BA17FBA42E0F295C00CC945F /* MarkPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkPicker.swift; sourceTree = "<group>"; };
+		BA17FBA62E0F298C00CC945F /* ContentPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPreview.swift; sourceTree = "<group>"; };
 		BAD38A2E2E0EDB44002410B9 /* ReviewListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewListView.swift; sourceTree = "<group>"; };
 		BAD38A302E0EEDAF002410B9 /* AppRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRoute.swift; sourceTree = "<group>"; };
 		BAD38A332E0EEE07002410B9 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
@@ -313,6 +319,8 @@
 		759673992E0848660019CD42 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				BA17FBA62E0F298C00CC945F /* ContentPreview.swift */,
+				BA17FBA42E0F295C00CC945F /* MarkPicker.swift */,
 				7596738C2E0848660019CD42 /* ErrorPlaceholderImageView.swift */,
 				7596738D2E0848660019CD42 /* ContentCardView.swift */,
 				7596738E2E0848660019CD42 /* ReviewCardView.swift */,
@@ -347,10 +355,27 @@
 			path = auth;
 			sourceTree = "<group>";
 		};
-		BAD38A2D2E0ED73F002410B9 /* ReviewScreen */ = {
+		BA17FBA02E0F263D00CC945F /* ReviewList */ = {
 			isa = PBXGroup;
 			children = (
 				BAD38A2E2E0EDB44002410B9 /* ReviewListView.swift */,
+			);
+			path = ReviewList;
+			sourceTree = "<group>";
+		};
+		BA17FBA12E0F264900CC945F /* ReviewEdit */ = {
+			isa = PBXGroup;
+			children = (
+				BA17FBA22E0F266C00CC945F /* ReviewEditorView.swift */,
+			);
+			path = ReviewEdit;
+			sourceTree = "<group>";
+		};
+		BAD38A2D2E0ED73F002410B9 /* ReviewScreen */ = {
+			isa = PBXGroup;
+			children = (
+				BA17FBA12E0F264900CC945F /* ReviewEdit */,
+				BA17FBA02E0F263D00CC945F /* ReviewList */,
 			);
 			path = ReviewScreen;
 			sourceTree = "<group>";
@@ -470,6 +495,7 @@
 				759673A32E0848660019CD42 /* InputField.swift in Sources */,
 				759673A42E0848660019CD42 /* ProfileView.swift in Sources */,
 				759673A52E0848660019CD42 /* UserModel.swift in Sources */,
+				BA17FBA72E0F299000CC945F /* ContentPreview.swift in Sources */,
 				759673A62E0848660019CD42 /* ErrorPlaceholderImageView.swift in Sources */,
 				759673A72E0848660019CD42 /* RegistrationView.swift in Sources */,
 				759673A82E0848660019CD42 /* ProfileHeaderView.swift in Sources */,
@@ -481,6 +507,7 @@
 				BAD38A312E0EEDB3002410B9 /* AppRoute.swift in Sources */,
 				759673AD2E0848660019CD42 /* LoginViewModel.swift in Sources */,
 				759673AE2E0848660019CD42 /* UserRowView.swift in Sources */,
+				BA17FBA52E0F296400CC945F /* MarkPicker.swift in Sources */,
 				759673AF2E0848660019CD42 /* CachedAsyncImage.swift in Sources */,
 				BAEA93C12E0C5BCE00DF7BB6 /* UserInfoView.swift in Sources */,
 				759673B02E0848660019CD42 /* AvatarPickerView.swift in Sources */,
@@ -496,6 +523,7 @@
 				759673B72E0848660019CD42 /* ReviewModel.swift in Sources */,
 				BAEA93C32E0C748E00DF7BB6 /* ExtFeatureError.swift in Sources */,
 				759673B82E0848660019CD42 /* LoginView.swift in Sources */,
+				BA17FBA32E0F267200CC945F /* ReviewEditorView.swift in Sources */,
 				759673B92E0848660019CD42 /* TabItem.swift in Sources */,
 				759673C22E084B110019CD42 /* AuthView.swift in Sources */,
 				759673BA2E0848660019CD42 /* ExtView.swift in Sources */,

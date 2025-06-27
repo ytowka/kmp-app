@@ -2,6 +2,7 @@ package com.example.kmpapp
 
 import com.example.feature.auth.ui.AuthViewModel
 import com.example.feature.content.ui.ContentListViewModel
+import com.example.feature.review.ui.edit.ReviewEditorViewModel
 import com.example.feature.review.ui.list.ReviewListViewModel
 import com.example.feature.root.RootViewModel
 import com.example.feature.topics.ui.TopicViewModel
@@ -38,5 +39,9 @@ object ViewModelProvider : KoinComponent {
 
     fun getReviewListViewModel(contentId: Long): ReviewListViewModel {
         return getKoin().get { parametersOf(contentId) }
+    }
+
+    fun getReviewEditorViewModel(contentId: Long): ReviewEditorViewModel {
+        return getKoin().get() { parametersOf(contentId) }
     }
 }

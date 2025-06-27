@@ -116,31 +116,39 @@ import SwiftUI
 import shared
 
 struct ReviewListView: View {
+    @EnvironmentObject var router: AppRouter
     @StateObject var wrapper: MviViewModelWrapper<ReviewListIntent, ReviewListState, ReviewListSideEffect>
     let contentName: String
 
     var body: some View {
         let state = wrapper.state
+        let _ = print(state.contentId)
         let rawList = state.listState.list
         let reviews: [ReviewCard] = rawList.compactMap { $0 as? ReviewCard }
 
-        ScrollView {
-            LazyVStack(spacing: 12) {
-                ForEach(reviews.indices, id: \.self) { index in
-                    let review = reviews[index]
+        VStack {
+            ScrollView {
+                LazyVStack(spacing: 12) {
+                    ForEach(reviews.indices, id: \.self) { index in
+                        let review = reviews[index]
 
-                    ReviewCardView(review: review)
-                        .onAppear {
-                            let isLast = index == reviews.count - 1
-                            let hasNext = state.listState.hasNextPage
+                        ReviewCardView(review: review)
+                            .onAppear {
+                                let isLast = index == reviews.count - 1
+                                let hasNext = state.listState.hasNextPage
 
-                            if isLast && hasNext {
-                                wrapper.accept(intent: ReviewListIntentLoadNext())
+                                if isLast && hasNext {
+                                    wrapper.accept(intent: ReviewListIntentLoadNext())
+                                }
                             }
-                        }
+                    }
                 }
+                .padding()
             }
-            .padding()
+
+            PrimaryButton(title: "Оставить отзыв") {
+                router.push(.reviewEditor(contentId: state.contentId))
+            }
         }
         .navigationBarModifier(title: contentName)
         .task {

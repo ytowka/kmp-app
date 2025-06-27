@@ -14,7 +14,3 @@ struct PrimaryButton: View {
             .clipShape(Capsule())
     }
 }
-
-#Preview {
-    PrimaryButton(title: "test", action: {})
-}
