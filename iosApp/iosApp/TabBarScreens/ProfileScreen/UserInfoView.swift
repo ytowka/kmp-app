@@ -47,6 +47,46 @@
 import SwiftUI
 import shared
 
+//struct UserInfoView: View {
+//    @StateObject var wrapper: MviViewModelWrapper<UserInfoIntent, UserInfoState, UserInfoSideEffect>
+//    var initialUserModel: shared.UserModel?
+//
+//    var body: some View {
+//        let state = wrapper.state
+//        let user = state.userModel ?? initialUserModel
+//        let reviewList = state.reviewListState.list.compactMap { $0 as? ReviewCard }
+//
+//
+//        ScrollView {
+//            VStack {
+//                if let user {
+//                    ProfileHeaderView(user: user)
+//                }
+//
+//                LazyVStack(spacing: 12) {
+//                    ForEach(reviewList, id: \.reviewModel.id) { review in
+//                        ReviewCardView(review: review)
+//                            .onAppear {
+//                                if review.reviewModel.id == state.reviewListState.list.last?.reviewModel.id,
+//                                   state.reviewListState.hasNextPage {
+//                                    wrapper.accept(intent: UserInfoIntentLoadNext())
+//                                }
+//                            }
+//                    }
+//                }
+//                .padding(.horizontal)
+//            }
+//        }
+//        .navigationBarModifier(title: "Профиль пользователя")
+//        .task {
+//            await wrapper.activate()
+//        }
+//    }
+//}
+
+import SwiftUI
+import shared
+
 struct UserInfoView: View {
     @StateObject var wrapper: MviViewModelWrapper<UserInfoIntent, UserInfoState, UserInfoSideEffect>
     var initialUserModel: shared.UserModel?
@@ -55,12 +95,27 @@ struct UserInfoView: View {
         let state = wrapper.state
         let user = state.userModel ?? initialUserModel
 
+        let allReviews = state.reviewListState.list
+        let reviews: [ReviewCard] = allReviews.compactMap { $0 as? ReviewCard }
+
         VStack {
             if let user {
                 ProfileHeaderView(user: user)
             }
 
-            Spacer()
+            ScrollView {
+                LazyVStack(spacing: 12) {
+                    ForEach(reviews, id: \.reviewModel.id) { review in
+                        ReviewCardView(review: review)
+                            .onAppear {
+                                if review.reviewModel.id == reviews.last?.reviewModel.id,
+                                   state.reviewListState.hasNextPage {
+                                    wrapper.accept(intent: UserInfoIntentLoadNext())
+                                }
+                            }
+                    }
+                }
+            }
         }
         .navigationBarModifier(title: "Профиль пользователя")
         .task {
@@ -68,3 +123,4 @@ struct UserInfoView: View {
         }
     }
 }
+

@@ -1,27 +1,28 @@
 import SwiftUI
+import shared
 
 struct ReviewCardView: View {
-    let review: ReviewUIModel
+    let review: ReviewCard
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                AvatarImageView(avatarUrl: review.userAvatarUrl)
+                AvatarImageView(avatarUrl: review.reviewUserInfo.userAvatarUrl)
                     .frame(width: 40, height: 40)
                     .clipShape(Circle())
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("@\(review.username)")
+                    Text("@\(review.reviewUserInfo.userName)")
                         .font(.subheadline)
                         .bold()
-                    Text("Пишет про \(review.movieTitle)")
+                    Text("Пишет про \(review.reviewModel.contentName)")
                         .font(.subheadline)
                         .foregroundColor(Color("PrimaryColor"))
                 }
                 
                 Spacer()
 
-                Text("\(Int(review.rating))")
+                Text("\(review.reviewModel.mark)")
                     .font(.headline)
                     .foregroundColor(.white)
                     .padding(8)
@@ -29,7 +30,7 @@ struct ReviewCardView: View {
                     .clipShape(Circle())
             }
 
-            Text(review.text)
+            Text(review.reviewModel.text)
                 .font(.body)
                 .foregroundColor(.primary)
         }

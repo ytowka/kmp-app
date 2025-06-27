@@ -11,14 +11,14 @@ struct ProfileView: View {
         VStack {
 //            ProfileHeaderView(user: viewModel.user)
 
-            ScrollView {
-                VStack(spacing: 12) {
-                    ForEach(viewModel.reviews) { review in
-                        ReviewCardView(review: review)
-                    }
-                }
-                .padding(.top)
-            }
+//            ScrollView {
+//                VStack(spacing: 12) {
+//                    ForEach(viewModel.reviews) { review in
+//                        ReviewCardView(review: review)
+//                    }
+//                }
+//                .padding(.top)
+//            }
         }
         .navigationBarModifier(title: "Профиль пользователя")
     }

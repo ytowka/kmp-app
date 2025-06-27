@@ -17,6 +17,8 @@ struct MainTabView: View {
     )
 
     var body: some View {
+        let _ = ViewModelProvider.shared.getUserInfoViewModel(userId: "")
+        
         NavigationStack {
             VStack(spacing: 0) {
                 ZStack {
