@@ -42,7 +42,6 @@ class ReviewEditorViewModel(
 
     override fun reduce(state: EditReviewState, intent: EditReviewIntent): EditReviewState {
         return when(intent){
-            is EditReviewIntent.Delete -> state.copy(mode = EditReviewMode.Pending)
             is EditReviewIntent.EditMark -> state.copy(mark = intent.mark)
             is EditReviewIntent.EditText -> state.copy(text = intent.text)
             EditReviewIntent.LoadReview -> state.copy(mode = EditReviewMode.Pending)
