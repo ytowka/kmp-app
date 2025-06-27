@@ -23,8 +23,9 @@ object NavDestinations {
 
     object ReviewEditor{
         const val contentIdArg = "contentId"
-        const val destination = "review_editor/{$contentIdArg}"
-        operator fun invoke(contentId: Long) = "review_editor/$contentId"
+        const val parentDestinationArg = "parentDestination"
+        const val destination = "review_editor/{$contentIdArg}/{$parentDestinationArg}"
+        operator fun invoke(contentId: Long, parendDestination: Int) = "review_editor/$contentId/$parendDestination"
     }
 
     object UserDetails {

@@ -6,6 +6,7 @@ import com.example.core.paging.PagingResponse
 import com.example.feature.review.ReviewAnalytics
 import com.example.feature.review.domain.dto.ReviewDto
 import com.example.feature.review.domain.usecase.GetReviewsByContentUseCase
+import com.example.feature.review.domain.usecase.SubscribeReviewsUpdate
 import com.example.feature.review.ui.toReviewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -14,6 +15,7 @@ import org.koin.core.annotation.Factory
 @Factory
 class ReviewListViewModel(
     val reviewsByContentUseCase: GetReviewsByContentUseCase,
+    val reviewUpdateUseCase: SubscribeReviewsUpdate,
     val contentId: Long,
 ) : MviViewModel<ReviewListIntent, ReviewListState, ReviewListSideEffect>(){
 
@@ -23,6 +25,9 @@ class ReviewListViewModel(
     override suspend fun loadData() {
         ReviewAnalytics.openReviewList()
         getNextPage(initialState)
+        reviewUpdateUseCase().collect {
+            getNextPage(initialState)
+        }
     }
 
     override fun reduce(state: ReviewListState, intent: ReviewListIntent): ReviewListState {

@@ -3,6 +3,8 @@ package com.example.feature.review.domain.repository
 import com.example.feature.review.domain.dto.ReviewDto
 import com.example.feature.review.domain.dto.ReviewListResponseDto
 import com.example.feature.review.domain.dto.ReviewRequestDto
+import com.example.feature.review.domain.dto.ReviewUpdateDto
+import kotlinx.coroutines.flow.Flow
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -15,4 +17,5 @@ interface ReviewRepository {
     suspend fun writeReview(reviewRequest: ReviewRequestDto)
     suspend fun editReview(reviewRequest: ReviewRequestDto)
     suspend fun deleteReview(reviewId: Long)
+    fun subscribeReviewUpdate(): Flow<Unit>
 }

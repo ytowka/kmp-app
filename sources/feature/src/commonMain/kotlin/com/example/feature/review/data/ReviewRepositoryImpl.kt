@@ -10,6 +10,8 @@ import com.example.api.review.ReviewRequest
 import com.example.api.review.ReviewResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.withContext
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
@@ -22,6 +24,7 @@ class ReviewRepositoryImpl(
     @Named("baseUrl") private val baseUrl: String
 ) : ReviewRepository {
 
+    private val updateFlow = MutableSharedFlow<Unit>()
 
     override suspend fun getReviewsByContent(contentId: Long, page: Int): ReviewListResponseDto {
         return withContext(Dispatchers.IO) {
@@ -46,19 +49,26 @@ class ReviewRepositoryImpl(
     override suspend fun writeReview(reviewRequest: ReviewRequestDto) {
         return withContext(Dispatchers.IO) {
             reviewApi.writeReview(reviewRequest.toApiRequest())
+            updateFlow.emit(Unit)
         }
     }
 
     override suspend fun editReview(reviewRequest: ReviewRequestDto) {
         return withContext(Dispatchers.IO) {
             reviewApi.editReview(reviewRequest.toApiRequest())
+            updateFlow.emit(Unit)
         }
     }
 
     override suspend fun deleteReview(reviewId: Long) {
         return withContext(Dispatchers.IO) {
             reviewApi.deleteReview(reviewId)
+            updateFlow.emit(Unit)
         }
+    }
+
+    override fun subscribeReviewUpdate(): Flow<Unit> {
+        return updateFlow
     }
 }
 
