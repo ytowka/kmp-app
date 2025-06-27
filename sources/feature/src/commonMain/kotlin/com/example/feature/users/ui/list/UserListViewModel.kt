@@ -6,6 +6,7 @@ import com.example.core.paging.PagingResponse
 import com.example.feature.users.domain.dto.UserDto
 import com.example.feature.users.domain.usecase.GetUserListUseCase
 import com.example.feature.users.domain.usecase.SearchUserUseCase
+import com.example.feature.users.ui.UserAnalytics
 import com.example.feature.users.ui.toUserModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ class UserListViewModel(
     override val initialState: UserListState = UserListState()
 
     override suspend fun loadData() {
+        UserAnalytics.openUserList()
         getNextPage(initialState)
         state.map { it.searchQuery }
             .filter { it.isNotBlank() }

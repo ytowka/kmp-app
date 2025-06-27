@@ -2,12 +2,16 @@ package com.example.feature.auth.ui
 
 import androidx.lifecycle.viewModelScope
 import com.example.core.arch.MviViewModel
+import com.example.feature.auth.AuthAnalytics
 import com.example.feature.auth.domain.dto.LoginRequestDto
 import com.example.feature.auth.domain.dto.RegisterRequestDto
 import com.example.feature.auth.domain.usecase.LoginUseCase
 import com.example.feature.auth.domain.usecase.RegisterUseCase
 import com.example.network.ApiException
 import io.ktor.http.HttpStatusCode
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
 
@@ -17,6 +21,19 @@ class AuthViewModel(
     private val registerUseCase: RegisterUseCase,
 ) : MviViewModel<AuthIntent, AuthState, AuthSideEffect>(){
 
+    override suspend fun loadData() {
+        viewModelScope.launch {
+            state
+                .map { it.currentForm }
+                .distinctUntilChanged()
+                .collectLatest {
+                    when(it){
+                        Form.LOGIN -> AuthAnalytics.openLoginScreen()
+                        Form.REGISTRATION -> AuthAnalytics.openRegisterScreen()
+                    }
+                }
+        }
+    }
 
     override val initialState: AuthState
         get() = AuthState()

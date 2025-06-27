@@ -3,6 +3,7 @@ package com.example.feature.content.ui
 import androidx.lifecycle.viewModelScope
 import com.example.core.arch.MviViewModel
 import com.example.core.paging.PagingResponse
+import com.example.feature.content.ContentAnalytics
 import com.example.feature.content.domain.dto.ContentDto
 import com.example.feature.content.domain.usecase.GetAllContentUseCase
 import com.example.feature.content.domain.usecase.SearchContentUseCase
@@ -19,6 +20,7 @@ class ContentListViewModel(
 ) : MviViewModel<ContentListIntent, ContentListState, ContentListSideEffect>() {
 
     override suspend fun loadData() {
+        ContentAnalytics.openScreen(topicName)
         getNextPage(initialState)
         state.map { it.searchQuery }
             .filter { it.isNotBlank() }

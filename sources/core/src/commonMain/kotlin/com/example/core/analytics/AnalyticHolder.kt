@@ -1,10 +1,10 @@
 package com.example.core.analytics
 
-object AnalyticHolder : IAnalytics{
+object AnalyticHolder {
 
-    lateinit var analytics: IAnalytics
+    lateinit var analytics: BaseAnalytics
 
-    override fun sendEvent(location: String, event: String, params: Map<String, Any?>) {
+    fun sendEvent(location: String, event: String, params: Map<String, Any?>) {
         analytics.sendEvent(location, event, params)
     }
 }

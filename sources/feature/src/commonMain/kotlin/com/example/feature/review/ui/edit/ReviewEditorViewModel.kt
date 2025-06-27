@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.core.arch.MviViewModel
 import com.example.feature.content.domain.usecase.GetContentByIdUseCase
 import com.example.feature.content.ui.toContentModel
+import com.example.feature.review.ReviewAnalytics
 import com.example.feature.review.domain.dto.ReviewRequestDto
 import com.example.feature.review.domain.usecase.DeleteReviewUseCase
 import com.example.feature.review.domain.usecase.EditReviewUseCase
@@ -32,6 +33,7 @@ class ReviewEditorViewModel(
     override val initialState: EditReviewState = EditReviewState()
 
     override suspend fun loadData() {
+        ReviewAnalytics.openReviewEdit()
         getContentByIdUseCase(contentId).onSuccess { content ->
             accept(EditReviewIntent.UpdateContent(content.toContentModel()))
         }

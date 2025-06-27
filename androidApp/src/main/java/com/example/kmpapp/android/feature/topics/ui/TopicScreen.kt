@@ -46,28 +46,6 @@ fun TopicScreen(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             item {
-                Column {
-                    Header(stringResource(R.string.recomend_to_you))
-                    if(state.recommendedContent.isEmpty()){
-                        Box(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp)
-                            .height(150.dp),
-                            contentAlignment = Alignment.Center
-                        ){
-                            Text(
-                                text = stringResource(R.string.review_more_for_recomendations),
-                            )
-                        }
-                    }else{
-                        RecomendedContentList(
-                            items = state.recommendedContent,
-                            onClick = onContentClick,
-                        )
-                    }
-                }
-            }
-            item {
                 Header(stringResource(R.string.topics))
             }
             items(state.topics, key = { it.id }){
@@ -77,6 +55,7 @@ fun TopicScreen(
     }
 
 }
+
 
 @Composable
 fun Header(
