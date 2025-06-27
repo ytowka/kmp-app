@@ -3,7 +3,7 @@ import shared
 
 struct MainTabView: View {
     @Namespace var tabAnimation
-    @State private var selectedTab: TabItem = .main
+    @State private var selectedTab: TabItem = .topics
     @StateObject private var profileWrapper = MviViewModelWrapper(
         vm: ViewModelProvider.shared.getUserInfoViewModel(userId: "")
     )
@@ -23,11 +23,9 @@ struct MainTabView: View {
             VStack(spacing: 0) {
                 ZStack {
                     switch selectedTab {
-                    case .main:
+                    case .topics:
                         TopicView(wrapper: topicWrapper)
                             .id("topicView")
-//                        ThemesView()
-//                            .id("themesView")
                     case .users:
                         UserListView(wrapper: userListWrapper)
                             .id("userListView")

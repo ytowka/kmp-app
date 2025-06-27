@@ -1,7 +1,8 @@
 import SwiftUI
+import shared
 
 struct ContentCardView: View {
-    let content: ContentModel
+    let content: shared.ContentModel
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -26,7 +27,7 @@ struct ContentCardView: View {
             }
 
             if let mark = content.avgMark {
-                Text(String(format: "%.1f", mark))
+                Text(String(format: "%.1f", Float(truncating: mark)))
                     .font(.caption)
                     .foregroundColor(.black)
                     .padding(6)
