@@ -82,23 +82,27 @@ fun RootScreen(
                 NavigationBar(
                     items = {
                         navigationItem(label = "Главная", icon = Icons.Default.Menu, onClick = {
-                            val navOptions = NavOptions.Builder().setPopUpTo(NavDestinations.TOPIC_LIST, false).build()
+                            val navOptions = NavOptions.Builder()
+                                .setPopUpTo(0, false).build()
                             currentNavItem = it
                             navController.navigate(NavDestinations.TOPIC_LIST, navOptions = navOptions)
                         })
                         navigationItem(label = "Пользователи", icon = Icons.Default.Groups, onClick = {
-                            val navOptions = NavOptions.Builder().setPopUpTo(NavDestinations.USER_SEARCH, false).build()
+                            val navOptions = NavOptions.Builder()
+                                .setPopUpTo(0, false).build()
                             currentNavItem = it
                             navController.navigate(NavDestinations.USER_SEARCH, navOptions = navOptions)
                         })
                         navigationItem(label = "Я", icon = Icons.Default.AccountCircle, onClick = {
-                            val navOptions = NavOptions.Builder().setPopUpTo(NavDestinations.MY_ACCOUNT, false).build()
+                            val navOptions = NavOptions.Builder()
+                                .setPopUpTo(0, false).build()
                             currentNavItem = it
                             navController.navigate(NavDestinations.MY_ACCOUNT, navOptions = navOptions)
                         })
                         if(successState.currentUser?.role == RoleDto.ADMIN){
                             navigationItem(label = "Админ", icon = Icons.Default.AccountCircle, onClick = {
-                                val navOptions = NavOptions.Builder().setPopUpTo(NavDestinations.USER_ADMIN_LIST, false).build()
+                                val navOptions = NavOptions.Builder()
+                                    .setPopUpTo(0, false).build()
                                 currentNavItem = it
                                 navController.navigate(NavDestinations.USER_ADMIN_LIST, navOptions = navOptions)
                             })
@@ -209,7 +213,7 @@ private fun ColumnScope.NavContainer(
 
         composable(
             route = NavDestinations.MY_ACCOUNT,
-        ){
+        ){ backStackEntry ->
             UserInfoScreen(
                 viewModel= injectViewModel { parametersOf(UserInfoViewModel.MY_USER_ID) },
                 onBack = {
@@ -222,7 +226,9 @@ private fun ColumnScope.NavContainer(
                     )
                 ) },
                 onReviewClick = {
-                    navController.navigate(NavDestinations.ReviewEditor(it.reviewModel.contentId))
+                    navController.navigate(NavDestinations.ReviewEditor(
+                        it.reviewModel.contentId, backStackEntry.destination.id)
+                    )
                 }
             )
         }
@@ -243,7 +249,7 @@ private fun ColumnScope.NavContainer(
                     navController.navigateUp()
                 },
                 onWriteReview = {
-                    navController.navigate(NavDestinations.ReviewEditor(contentId))
+                    navController.navigate(NavDestinations.ReviewEditor(contentId, backStackEntry.destination.id))
                 },
                 onCardClick = {
                     navController.navigate(NavDestinations.UserProfile(it.reviewUserInfo.userId))
@@ -253,13 +259,22 @@ private fun ColumnScope.NavContainer(
 
         composable(
             route = NavDestinations.ReviewEditor.destination,
-            arguments = listOf(navArgument(NavDestinations.ReviewEditor.contentIdArg) { type = NavType.LongType })
+            arguments = listOf(
+                navArgument(NavDestinations.ReviewEditor.contentIdArg) { type = NavType.LongType },
+                navArgument(NavDestinations.ReviewEditor.parentDestinationArg) { type = NavType.IntType }
+            )
         ){ backStackEntry ->
             val contentId = backStackEntry.arguments?.getLong(NavDestinations.ReviewEditor.contentIdArg)!!
+            val parentDestination = backStackEntry.arguments?.getInt(NavDestinations.ReviewEditor.parentDestinationArg)!!
             ReviewEditorScreen(
                 viewModel= injectViewModel { parametersOf(contentId) },
                 onBack = { navController.navigateUp() },
-                onSave = {  navController.navigate(NavDestinations.MY_ACCOUNT) }
+                onSave = {
+                    navController.navigate(NavDestinations.MY_ACCOUNT) {
+                        popUpTo(parentDestination)
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 
