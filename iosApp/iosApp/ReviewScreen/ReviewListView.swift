@@ -142,8 +142,7 @@ struct ReviewListView: View {
             }
             .padding()
         }
-        .navigationTitle(contentName)
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarModifier(title: contentName)
         .task {
             await wrapper.activate()
         }

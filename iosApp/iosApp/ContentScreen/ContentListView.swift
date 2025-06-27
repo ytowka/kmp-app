@@ -262,28 +262,125 @@
 //}
 
 
+//import SwiftUI
+//import shared
+//
+//struct ContentListView: View {
+//    @StateObject var wrapper: MviViewModelWrapper<ContentListIntent, ContentListState, ContentListSideEffect>
+//    var onContentClick: (shared.ContentModel) -> Void
+//
+//    var body: some View {
+//        let state = wrapper.state
+//        let list = state.currentPagerState.list.compactMap { $0 as? shared.ContentModel }
+//
+//        ScrollView {
+//            LazyVStack(spacing: 12) {
+//                ForEach(list, id: \.id) { content in
+//                    Button {
+//                        onContentClick(content)
+//                    } label: {
+//                        ContentCardView(content: content)
+//                    }
+//                }
+//            }
+//            .padding()
+//        }
+//        .navigationTitle(state.topicName)
+//        .navigationBarTitleDisplayMode(.inline)
+//        .task {
+//            await wrapper.activate()
+//        }
+//    }
+//}
+
+//import SwiftUI
+//import shared
+//
+//struct ContentListView: View {
+//    @ObservedObject var wrapper: MviViewModelWrapper<ContentListIntent, ContentListState, ContentListSideEffect>
+//    var onContentSelected: (shared.ContentModel) -> Void
+//
+//    var body: some View {
+//        let state = wrapper.state
+//        let contentList = state.currentPagerState.list.compactMap { $0 as? shared.ContentModel }
+//
+//        VStack {
+//            SearchBarView(
+//                text: Binding(
+//                    get: { state.searchQuery },
+//                    set: { wrapper.accept(intent: ContentListIntentSearch(query: $0)) }
+//                )
+//            )
+//
+//            ScrollView {
+//                LazyVStack(spacing: 12) {
+//                    ForEach(contentList, id: \.id) { content in
+//                        Button {
+//                            onContentSelected(content)
+//                        } label: {
+//                            ContentCardView(content: content)
+//                        }
+//                        .onAppear {
+//                            if content.id == contentList.last?.id,
+//                               state.currentPagerState.hasNextPage,
+//                               !state.isLoading {
+//                                wrapper.accept(intent: ContentListIntentLoadNext())
+//                            }
+//                        }
+//                    }
+//                }
+//                .padding(.horizontal)
+//            }
+//        }
+//        .navigationTitle(state.topicName)
+//        .navigationBarTitleDisplayMode(.inline)
+//        .task {
+//            await wrapper.activate()
+//        }
+//    }
+//}
+
 import SwiftUI
 import shared
 
 struct ContentListView: View {
     @StateObject var wrapper: MviViewModelWrapper<ContentListIntent, ContentListState, ContentListSideEffect>
-    var onContentClick: (shared.ContentModel) -> Void
+    var onContentSelected: (shared.ContentModel) -> Void
 
     var body: some View {
         let state = wrapper.state
-        let list = state.currentPagerState.list.compactMap { $0 as? shared.ContentModel }
+        let contentList = state.currentPagerState.list.compactMap { $0 as? shared.ContentModel }
 
-        ScrollView {
-            LazyVStack(spacing: 12) {
-                ForEach(list, id: \.id) { content in
-                    Button {
-                        onContentClick(content)
-                    } label: {
-                        ContentCardView(content: content)
+        VStack {
+            SearchBarView(
+                text: Binding(
+                    get: { state.searchQuery },
+                    set: { wrapper.accept(intent: ContentListIntentSearch(query: $0)) }
+                )
+            )
+
+            ScrollView {
+                LazyVStack(spacing: 12) {
+                    ForEach(contentList, id: \.id) { content in
+                        Button {
+                            onContentSelected(content)
+                        } label: {
+                            ContentCardView(content: content)
+                        }
+                        .onAppear {
+                            if content.id == contentList.last?.id,
+                               state.pagerState.hasNextPage,
+                               state.searchQuery.isEmpty {
+                                wrapper.accept(intent: ContentListIntentLoadNext())
+                            }
+                        }
                     }
+
+                    let model = shared.ContentModel(id: 100, themeId: 1, name: "Веном", imageUrl: "https://sun1-27.userapi.com/impg/ScrivahxBfrTHs8fPOO7fwwgFLGJZ-yaLeXEUQ/bM5sZfC-XB0.jpg?size=403x604&quality=95&sign=35301c033ba084f3f0111c3938dcf6c4&type=album", avgMark: 5, reviewCount: 0)
+                    ContentCardView(content: model)
                 }
+                .padding()
             }
-            .padding()
         }
         .navigationTitle(state.topicName)
         .navigationBarTitleDisplayMode(.inline)

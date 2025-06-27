@@ -55,6 +55,8 @@
 		75DF1B262DFDA84300F2FDF4 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 75DF1B252DFDA84300F2FDF4 /* FirebaseAnalytics */; };
 		75DF1B282DFDA84300F2FDF4 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 75DF1B272DFDA84300F2FDF4 /* FirebaseCrashlytics */; };
 		BAD38A2F2E0EDB4A002410B9 /* ReviewListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD38A2E2E0EDB44002410B9 /* ReviewListView.swift */; };
+		BAD38A312E0EEDB3002410B9 /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD38A302E0EEDAF002410B9 /* AppRoute.swift */; };
+		BAD38A342E0EEE0B002410B9 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD38A332E0EEE07002410B9 /* AppRouter.swift */; };
 		BAEA93C12E0C5BCE00DF7BB6 /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAEA93C02E0C5BC900DF7BB6 /* UserInfoView.swift */; };
 		BAEA93C32E0C748E00DF7BB6 /* ExtFeatureError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAEA93C22E0C748600DF7BB6 /* ExtFeatureError.swift */; };
 		BAEA93C52E0D7A5100DF7BB6 /* TopicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAEA93C42E0D7A3C00DF7BB6 /* TopicView.swift */; };
@@ -120,6 +122,8 @@
 		759673C32E0854A10019CD42 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		75DF1B222DFDA7AD00F2FDF4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BAD38A2E2E0EDB44002410B9 /* ReviewListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewListView.swift; sourceTree = "<group>"; };
+		BAD38A302E0EEDAF002410B9 /* AppRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRoute.swift; sourceTree = "<group>"; };
+		BAD38A332E0EEE07002410B9 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		BAEA93C02E0C5BC900DF7BB6 /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
 		BAEA93C22E0C748600DF7BB6 /* ExtFeatureError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtFeatureError.swift; sourceTree = "<group>"; };
 		BAEA93C42E0D7A3C00DF7BB6 /* TopicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicView.swift; sourceTree = "<group>"; };
@@ -168,6 +172,7 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				BAD38A322E0EEDFE002410B9 /* Router */,
 				7586FA462E0C665E009CEA60 /* analytics */,
 				7596736F2E0848660019CD42 /* Helpers */,
 				759673742E0848660019CD42 /* Models */,
@@ -347,6 +352,15 @@
 			path = ReviewScreen;
 			sourceTree = "<group>";
 		};
+		BAD38A322E0EEDFE002410B9 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				BAD38A332E0EEE07002410B9 /* AppRouter.swift */,
+				BAD38A302E0EEDAF002410B9 /* AppRoute.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -461,11 +475,13 @@
 				759673AA2E0848660019CD42 /* RegViewModel.swift in Sources */,
 				759673AB2E0848660019CD42 /* ImageCache.swift in Sources */,
 				759673AC2E0848660019CD42 /* ContentModel.swift in Sources */,
+				BAD38A312E0EEDB3002410B9 /* AppRoute.swift in Sources */,
 				759673AD2E0848660019CD42 /* LoginViewModel.swift in Sources */,
 				759673AE2E0848660019CD42 /* UserRowView.swift in Sources */,
 				759673AF2E0848660019CD42 /* CachedAsyncImage.swift in Sources */,
 				BAEA93C12E0C5BCE00DF7BB6 /* UserInfoView.swift in Sources */,
 				759673B02E0848660019CD42 /* AvatarPickerView.swift in Sources */,
+				BAD38A342E0EEE0B002410B9 /* AppRouter.swift in Sources */,
 				759673B12E0848660019CD42 /* PrimaryButton.swift in Sources */,
 				759673B22E0848660019CD42 /* ThemesView.swift in Sources */,
 				759673B32E0848660019CD42 /* ThemesViewModel.swift in Sources */,

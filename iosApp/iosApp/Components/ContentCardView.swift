@@ -14,7 +14,7 @@ struct ContentCardView: View {
                         errorPlaceholder: {
                             ErrorPlaceholderImageView()
                         },
-                        contentMode: .fill
+                        contentMode: .fit
                     )
                     .cornerRadius(12)
                 }
@@ -42,3 +42,13 @@ struct ContentCardView: View {
     }
 }
 
+struct ContentCardView_Previes: PreviewProvider {
+    static var previews: some View {
+        let model = shared.ContentModel(id: 100, themeId: 1, name: "Веном", imageUrl: "https://sun1-27.userapi.com/impg/ScrivahxBfrTHs8fPOO7fwwgFLGJZ-yaLeXEUQ/bM5sZfC-XB0.jpg?size=403x604&quality=95&sign=35301c033ba084f3f0111c3938dcf6c4&type=album", avgMark: 5, reviewCount: 0)
+        ContentCardView(content: model)
+    }
+}
+//#Preview {
+//    let model = shared.ContentModel(id: 100, themeId: 1, name: "Веном", imageUrl: "https://sun1-27.userapi.com/impg/ScrivahxBfrTHs8fPOO7fwwgFLGJZ-yaLeXEUQ/bM5sZfC-XB0.jpg?size=403x604&quality=95&sign=35301c033ba084f3f0111c3938dcf6c4&type=album", avgMark: 5, reviewCount: 0)
+//    ContentCardView(content: model)
+//}

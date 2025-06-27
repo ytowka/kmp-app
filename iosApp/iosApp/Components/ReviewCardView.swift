@@ -25,9 +25,11 @@ struct ReviewCardView: View {
                 Text("\(review.reviewModel.mark)")
                     .font(.headline)
                     .foregroundColor(.white)
-                    .padding(8)
+                    .frame(width: 40, height: 40)
                     .background(Color.yellow)
                     .clipShape(Circle())
+                    .multilineTextAlignment(.center)
+
             }
 
             Text(review.reviewModel.text)
