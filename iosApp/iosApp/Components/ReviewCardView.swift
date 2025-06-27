@@ -22,11 +22,12 @@ struct ReviewCardView: View {
                 
                 Spacer()
 
-                Text("\(review.reviewModel.mark)")
+                let mark = review.reviewModel.mark
+                Text("\(mark)")
                     .font(.headline)
                     .foregroundColor(.white)
                     .frame(width: 40, height: 40)
-                    .background(Color.yellow)
+                    .background(MarkColors.getColor(for: Float(mark)))
                     .clipShape(Circle())
                     .multilineTextAlignment(.center)
 

@@ -54,6 +54,7 @@
 		75DF1B232DFDA7AD00F2FDF4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 75DF1B222DFDA7AD00F2FDF4 /* GoogleService-Info.plist */; };
 		75DF1B262DFDA84300F2FDF4 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 75DF1B252DFDA84300F2FDF4 /* FirebaseAnalytics */; };
 		75DF1B282DFDA84300F2FDF4 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 75DF1B272DFDA84300F2FDF4 /* FirebaseCrashlytics */; };
+		BA17FB9F2E0F1AA500CC945F /* MarkColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA17FB9E2E0F1A9F00CC945F /* MarkColors.swift */; };
 		BAD38A2F2E0EDB4A002410B9 /* ReviewListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD38A2E2E0EDB44002410B9 /* ReviewListView.swift */; };
 		BAD38A312E0EEDB3002410B9 /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD38A302E0EEDAF002410B9 /* AppRoute.swift */; };
 		BAD38A342E0EEE0B002410B9 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD38A332E0EEE07002410B9 /* AppRouter.swift */; };
@@ -121,6 +122,7 @@
 		759673C12E084B090019CD42 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		759673C32E0854A10019CD42 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		75DF1B222DFDA7AD00F2FDF4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BA17FB9E2E0F1A9F00CC945F /* MarkColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkColors.swift; sourceTree = "<group>"; };
 		BAD38A2E2E0EDB44002410B9 /* ReviewListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewListView.swift; sourceTree = "<group>"; };
 		BAD38A302E0EEDAF002410B9 /* AppRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRoute.swift; sourceTree = "<group>"; };
 		BAD38A332E0EEE07002410B9 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 		7596736F2E0848660019CD42 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				BA17FB9E2E0F1A9F00CC945F /* MarkColors.swift */,
 				BAEA93C22E0C748600DF7BB6 /* ExtFeatureError.swift */,
 				7596736C2E0848660019CD42 /* ExtView.swift */,
 				7596736D2E0848660019CD42 /* ExtColor.swift */,
@@ -502,6 +505,7 @@
 				759673BF2E0848660019CD42 /* UserListView.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				7596736B2E082EDD0019CD42 /* MviViewModelWrapper.swift in Sources */,
+				BA17FB9F2E0F1AA500CC945F /* MarkColors.swift in Sources */,
 				7555FF83242A565900829871 /* RootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

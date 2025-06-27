@@ -27,12 +27,15 @@ struct ContentCardView: View {
             }
 
             if let mark = content.avgMark {
+                let markValue = Float(truncating: mark)
                 Text(String(format: "%.1f", Float(truncating: mark)))
                     .font(.caption)
-                    .foregroundColor(.black)
-                    .padding(6)
-                    .background(Color.yellow)
+                    .bold()
+                    .foregroundColor(.white)
+                    .frame(width: 40, height: 40)
+                    .background(MarkColors.getColor(for: markValue))
                     .clipShape(Circle())
+                    .multilineTextAlignment(.center)
                     .padding(8)
             }
         }
@@ -41,14 +44,3 @@ struct ContentCardView: View {
         .shadow(radius: 4)
     }
 }
-
-struct ContentCardView_Previes: PreviewProvider {
-    static var previews: some View {
-        let model = shared.ContentModel(id: 100, themeId: 1, name: "Веном", imageUrl: "https://sun1-27.userapi.com/impg/ScrivahxBfrTHs8fPOO7fwwgFLGJZ-yaLeXEUQ/bM5sZfC-XB0.jpg?size=403x604&quality=95&sign=35301c033ba084f3f0111c3938dcf6c4&type=album", avgMark: 5, reviewCount: 0)
-        ContentCardView(content: model)
-    }
-}
-//#Preview {
-//    let model = shared.ContentModel(id: 100, themeId: 1, name: "Веном", imageUrl: "https://sun1-27.userapi.com/impg/ScrivahxBfrTHs8fPOO7fwwgFLGJZ-yaLeXEUQ/bM5sZfC-XB0.jpg?size=403x604&quality=95&sign=35301c033ba084f3f0111c3938dcf6c4&type=album", avgMark: 5, reviewCount: 0)
-//    ContentCardView(content: model)
-//}
