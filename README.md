@@ -9,5 +9,8 @@
  - Поиск пользователей
  - Просмотр страниц
 
+Поддерживается светлая/темная тема, но в приложении нет переключателя.
+Firebase analytics вызывается во вьюмоделях.
+
 ## Api
 https://github.com/ytowka/spring-boot-android-semester-work
