@@ -131,7 +131,7 @@ fun UserProfileReviewList(
         state = listState,
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        items(pagingState.list, key = { "${it.reviewModel.contentId}${it.reviewUserInfo.userId}" }){
+        items(pagingState.list, key = { "${it.reviewModel.contentId}-${it.reviewUserInfo.userId}" }){
             UserProfileReviewCard(
                 it,
                 onContentClick = { onContentClick(it) },
@@ -176,7 +176,9 @@ fun UserProfileReviewCard(
                     error = placeholder
                 )
                 Spacer(modifier = Modifier.width(10.dp))
-                Column {
+                Column(
+                    modifier = Modifier.weight(1f)
+                ) {
                     Text(
                         text = "@${reviewCard.reviewUserInfo.userName}",
                         style = MaterialTheme.typography.titleMedium,
@@ -200,7 +202,6 @@ fun UserProfileReviewCard(
                         }
                     )
                 }
-                Spacer(modifier = Modifier.weight(1f))
                 MarkBadge(
                     mark = reviewCard.reviewModel.mark
                 )
