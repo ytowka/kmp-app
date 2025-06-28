@@ -26,7 +26,6 @@ struct iOSApp: App {
     
 	var body: some Scene {
 		WindowGroup {
-			//RootScreen()
             RootView()
 		}
 	}

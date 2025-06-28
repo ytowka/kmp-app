@@ -49,6 +49,7 @@ struct ReviewEditorView: View {
                         wrapper.accept(intent: EditReviewIntentDelete())
                     } label: {
                         Image(systemName: "trash")
+                            .foregroundStyle(Color.black)
                     }
                 }
             }
