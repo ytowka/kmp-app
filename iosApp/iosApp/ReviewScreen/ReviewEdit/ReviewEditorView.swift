@@ -1,18 +1,14 @@
-//
-//  ReviewEditView.swift
-//  iosApp
-//
-//  Created by kerik on 27.06.2025.
-//  Copyright © 2025 orgName. All rights reserved.
-//
-
 import SwiftUI
 import shared
 
 struct ReviewEditorView: View {
+    @EnvironmentObject var router: AppRouter
     @StateObject var wrapper: MviViewModelWrapper<EditReviewIntent, EditReviewState, EditReviewSideEffect>
+
     var onSave: () -> Void
     var onBack: () -> Void
+
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         let state = wrapper.state
@@ -21,34 +17,51 @@ struct ReviewEditorView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     if let content = state.content {
-                        ContentPreview(content: content)
+                        ReviewHeaderView(content: content)
                     }
 
-                    TextField("Текст отзыва", text: Binding(
-                        get: { state.text },
-                        set: { wrapper.accept(intent: EditReviewIntentEditText(text: $0)) }
-                    ))
-                    .textFieldStyle(.roundedBorder)
+                    ReviewTextInputView(
+                        text: Binding(
+                            get: { state.text },
+                            set: { wrapper.accept(intent: EditReviewIntentEditText(text: $0)) }
+                        )
+                    )
 
-                    MarkPicker(mark: Int(truncating: state.mark ?? 0)) { newMark in
-                        wrapper.accept(intent: EditReviewIntentEditMark(mark: Int32(newMark)))
-                    }
+                    StarRatingView(
+                        rating: Binding(
+                            get: { Int(truncating: state.mark ?? 0) },
+                            set: { wrapper.accept(intent: EditReviewIntentEditMark(mark: Int32($0))) }
+                        )
+                    )
 
-                    Button("Сохранить") {
+                    PrimaryButton(title: "Сохранить") {
                         wrapper.accept(intent: EditReviewIntentSave())
                     }
-                    .disabled(!state.isValid)
-                    .buttonStyle(.borderedProminent)
                 }
                 .padding()
             }
         }
+        .navigationBarModifier(title: "Редактировать отзыв")
+        .toolbar {
+            if case is EditReviewModeEdit = state.mode {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(role: .destructive) {
+                        wrapper.accept(intent: EditReviewIntentDelete())
+                    } label: {
+                        Image(systemName: "trash")
+                    }
+                }
+            }
+        }
         .task {
-            await wrapper.activateSideEffects()
+            await wrapper.activateSideEffects { sideEffect in
+                if sideEffect is EditReviewSideEffectReviewUpdated {
+                    onSave()
+                }
+            }
         }
         .task {
             await wrapper.activate()
         }
     }
 }
-

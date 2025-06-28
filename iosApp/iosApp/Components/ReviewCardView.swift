@@ -3,6 +3,8 @@ import shared
 
 struct ReviewCardView: View {
     let review: ReviewCard
+    var showContentInfo: Bool = false
+    var onContentTapped: ((Int64, String) -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -15,11 +17,16 @@ struct ReviewCardView: View {
                     Text("@\(review.reviewUserInfo.userName)")
                         .font(.subheadline)
                         .bold()
-                    Text("Пишет про \(review.reviewModel.contentName)")
-                        .font(.subheadline)
-                        .foregroundColor(Color("PrimaryColor"))
+                    if showContentInfo {
+                        Text("Пишет про \(review.reviewModel.contentName)")
+                            .font(.subheadline)
+                            .foregroundColor(Color("PrimaryColor"))
+                            .onTapGesture {
+                                onContentTapped?(review.reviewModel.contentId, review.reviewModel.contentName)
+                            }
+                    }
                 }
-                
+
                 Spacer()
 
                 let mark = review.reviewModel.mark

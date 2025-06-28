@@ -8,9 +8,9 @@
 import Foundation
 import shared
 
-enum AppRoute: Hashable {
+indirect enum AppRoute: Hashable {
     case contentList(topicId: Int64, topicName: String)
     case reviewList(contentId: Int64, contentName: String)
-    case userProfile(user: shared.UserModel)
+    case userProfile(userId: String)
     case reviewEditor(contentId: Int64)
 }

@@ -39,7 +39,7 @@ struct ContentCardView: View {
                     .padding(8)
             }
         }
-        .background(Color.black)
+        .background(Color("ContentCardColor"))
         .cornerRadius(12)
         .shadow(radius: 4)
     }

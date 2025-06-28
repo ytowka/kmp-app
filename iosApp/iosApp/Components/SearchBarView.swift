@@ -22,7 +22,6 @@ struct SearchBarView: View {
         }
         .padding(10)
         .background(Color("NavigationBarColor"))
-        //.background(Color(UIColor.systemGray5))
         .frame(maxWidth: .infinity)
     }
 }

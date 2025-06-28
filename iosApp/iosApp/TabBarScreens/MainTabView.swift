@@ -103,7 +103,7 @@ import shared
 //                case .users:
 //                    UserListView(wrapper: userListWrapper, onUserSelected: { user in
 //                        path.append(.userProfile(user: user))
-//                    }).id("userListView") 
+//                    }).id("userListView")
 //
 //                case .profile:
 //                    UserInfoView(wrapper: profileWrapper)
@@ -348,6 +348,8 @@ import shared
 struct MainTabView: View {
     @Namespace var tabAnimation
     @State private var selectedTab: TabItem = .topics
+    @EnvironmentObject var router: AppRouter
+    @State private var refreshToken = UUID()
 
     @StateObject private var profileWrapper = MviViewModelWrapper(
         vm: ViewModelProvider.shared.getUserInfoViewModel(userId: "")
@@ -361,10 +363,9 @@ struct MainTabView: View {
         vm: ViewModelProvider.shared.getUserListViewModel()
     )
 
-    // Навигация
     var onTopicSelected: (shared.TopicModel) -> Void
     var onContentSelected: (shared.ContentModel) -> Void
-    var onUserSelected: (shared.UserModel) -> Void
+    var onUserSelected: (String) -> Void
 
     var body: some View {
         VStack(spacing: 0) {
@@ -376,12 +377,16 @@ struct MainTabView: View {
                     }
 
                 case .users:
-                    UserListView(wrapper: userListWrapper) { user in
-                        onUserSelected(user)
+                    UserListView(wrapper: userListWrapper) { userId in
+                        onUserSelected(userId)
                     }
 
                 case .profile:
-                    UserInfoView(wrapper: profileWrapper)
+                    let wrapper = MviViewModelWrapper(
+                        vm: ViewModelProvider.shared.getUserInfoViewModel(userId: "")
+                    )
+                    UserInfoView(wrapper: wrapper)
+                        .id(refreshToken)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -400,10 +405,13 @@ struct MainTabView: View {
                 }
             }
             .frame(height: 60)
-            .background(Color.white)
+            .background(Color("TabBarColor"))
         }
         .onAppear {
             setupNavigationBarAppearance()
+        }
+        .onChange(of: router.refreshProfileView) { _ in
+            refreshToken = UUID()
         }
     }
 

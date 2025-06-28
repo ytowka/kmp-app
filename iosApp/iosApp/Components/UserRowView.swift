@@ -2,7 +2,7 @@ import SwiftUI
 import shared
 
 struct UserRowView: View {
-    let user: shared.UserModel
+    let user: UserModel
 
     var body: some View {
         HStack(spacing: 12) {
@@ -13,7 +13,7 @@ struct UserRowView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("@\(user.login)")
                     .font(.subheadline)
-                    .foregroundColor(.black)
+                    .foregroundColor(Color("TextColor"))
                     .fontWeight(.medium)
 
                 Text("\(user.id)")

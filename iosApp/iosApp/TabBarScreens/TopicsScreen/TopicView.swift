@@ -222,8 +222,7 @@ struct TopicView: View {
             }
             .padding()
         }
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("Темы")
+        .navigationBarModifier(title: "Темы")
         .task {
             await wrapper.activate()
         }

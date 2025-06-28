@@ -10,11 +10,11 @@ import Foundation
 import shared
 
 class MviViewModelWrapper<Intent: AnyObject, State: AnyObject, SideEffect: AnyObject>: ObservableObject {
-    
+
     private let vm: MviViewModel<Intent, State, SideEffect>
-    
+
     @Published var state: State
-    
+
     init(vm: MviViewModel<Intent, State, SideEffect>) {
         self.vm = vm
         state = vm.initialState!
@@ -31,6 +31,15 @@ class MviViewModelWrapper<Intent: AnyObject, State: AnyObject, SideEffect: AnyOb
     func activateSideEffects() async {
         for await sideEffect in vm.sideEffect {
 
+        }
+    }
+
+    @MainActor
+    func activateSideEffects(_ handler: @escaping (SideEffect) -> Void) async {
+        for await sideEffect in vm.sideEffect {
+            if let sideEffect = sideEffect {
+                handler(sideEffect)
+            }
         }
     }
 

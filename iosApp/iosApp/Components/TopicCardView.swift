@@ -20,7 +20,6 @@ struct TopicCardView: View {
                 .aspectRatio(1.8, contentMode: .fit)
             }
 
-            // Название и количество контента
             HStack {
                 Text(topic.name)
                     .font(.subheadline)

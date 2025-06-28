@@ -3,11 +3,11 @@ import shared
 
 struct ContentListView: View {
     @StateObject var wrapper: MviViewModelWrapper<ContentListIntent, ContentListState, ContentListSideEffect>
-    var onContentSelected: (shared.ContentModel) -> Void
+    var onContentSelected: (ContentModel) -> Void
 
     var body: some View {
         let state = wrapper.state
-        let contentList = state.currentPagerState.list.compactMap { $0 as? shared.ContentModel }
+        let contentList = state.currentPagerState.list.compactMap { $0 as? ContentModel }
 
         VStack {
             SearchBarView(
@@ -37,8 +37,7 @@ struct ContentListView: View {
                 .padding()
             }
         }
-        .navigationTitle(state.topicName)
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarModifier(title: "\(state.topicName)")
         .task {
             await wrapper.activate()
         }

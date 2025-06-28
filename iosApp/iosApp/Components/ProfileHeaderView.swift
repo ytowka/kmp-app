@@ -2,7 +2,7 @@ import SwiftUI
 import shared
 
 struct ProfileHeaderView: View {
-    let user: shared.UserModel
+    let user: UserModel
 
     var body: some View {
         HStack(spacing: 12) {

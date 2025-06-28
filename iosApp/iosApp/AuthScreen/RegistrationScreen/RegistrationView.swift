@@ -7,7 +7,6 @@ struct RegistrationView: View {
     @State private var showImagePicker = false
     @State private var pickerItem: PhotosPickerItem? = nil
     @State var avatar: UIImage?
-    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         let state = vm.state.registerState
@@ -24,7 +23,6 @@ struct RegistrationView: View {
                         image: $avatar,
                         isPickerPresented: $showImagePicker
                     )
-
 
                     InputField(
                         placeholder: "Логин",

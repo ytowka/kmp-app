@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct TabBarItemView: View {
+    @Environment(\.colorScheme) private var colorScheme
     let tab: TabItem
     let isSelected: Bool
     let namespace: Namespace.ID
@@ -19,32 +20,15 @@ struct TabBarItemView: View {
                 Group {
                     if isSelected {
                         RoundedRectangle(cornerRadius: 8)
-                            .fill(Color("PrimaryColor"))
+                            .fill(Color("TabBarSelectedColor"))
                             .matchedGeometryEffect(id: "tabBackground", in: namespace)
                     } else {
                         Color.clear
                     }
                 }
             )
-            .foregroundColor(isSelected ? .white : .black)
+            .foregroundColor(isSelected ? Color("SelectedColor") : Color("ReversedSelectedColor"))
         }
-        //.frame(maxWidth: .infinity)
     }
-
-    //    var body: some View {
-    //        Button(action: onTap) {
-    //            VStack(spacing: 4) {
-    //                Image(systemName: tab.systemImage)
-    //                    .foregroundColor(isSelected ? .white : .black)
-    //                Text(tab.label)
-    //                    .font(.caption)
-    //                    .foregroundColor(isSelected ? .white : .black)
-    //            }
-    //            .padding(.horizontal, 16)
-    //            .padding(.vertical, 8)
-    //            .background(isSelected ? Color("PrimaryColor") : Color.clear)
-    //            .cornerRadius(8)
-    //        }
-    //    }
 }
 

@@ -16,7 +16,7 @@ struct AvatarPickerView: View {
                 } else {
                     Image(systemName: "person.circle.fill")
                         .resizable()
-                        .foregroundColor(.black)
+                        .foregroundColor(Color("TextColor"))
                 }
             }
             .aspectRatio(contentMode: .fill)
