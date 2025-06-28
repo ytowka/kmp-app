@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">КонтенДрузья</string>
+    <string name="app_name">Контент Отзовик</string>
     <string name="register">Создать аккаунт</string>
     <string name="login">Войти</string>
     <string name="email">Эл. почта</string>
