@@ -7,6 +7,6 @@ import com.example.api.auth.TokenPairResponse
 interface AuthApi {
 
     fun register(registerRequest: RegisterRequest): TokenPairResponse
-    fun login(loginRequest: com.example.api.auth.LoginRequest): TokenPairResponse
+    fun login(loginRequest: LoginRequest): TokenPairResponse
     fun refreshToken(refreshTokenRequest: RefreshTokenRequest): TokenPairResponse
 }

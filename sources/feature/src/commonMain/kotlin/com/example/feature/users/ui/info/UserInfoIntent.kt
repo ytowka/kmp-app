@@ -11,5 +11,4 @@ sealed interface UserInfoIntent {
     data class UpdatePagingState(val pagingState: PagingState<ReviewCard>) : UserInfoIntent
 }
 
-sealed interface UserInfoSideEffect {
-}
+sealed interface UserInfoSideEffect

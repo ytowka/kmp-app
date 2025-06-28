@@ -30,7 +30,6 @@ import com.example.kmpapp.android.coreui.injectViewModel
 fun TopicScreen(
     topicsViewModel: TopicViewModel = injectViewModel(),
     onTopicClick: (TopicModel) -> Unit,
-    onContentClick: (ContentModel) -> Unit,
 ) {
     val state by topicsViewModel.state.collectAsState()
 
@@ -38,7 +37,7 @@ fun TopicScreen(
         TopBar(
             actionIcon = null,
             onActionClick = {},
-            text = stringResource(R.string.topics),
+            text = stringResource(R.string.main),
         )
 
         LazyColumn(

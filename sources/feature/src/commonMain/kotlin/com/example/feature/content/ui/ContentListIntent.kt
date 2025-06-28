@@ -19,6 +19,4 @@ sealed interface ContentListIntent {
     ) : ContentListIntent
 }
 
-sealed interface ContentListSideEffect {
-
-}
+sealed interface ContentListSideEffect

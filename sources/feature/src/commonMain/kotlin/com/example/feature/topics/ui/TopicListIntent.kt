@@ -13,6 +13,4 @@ sealed interface TopicListIntent {
     ) : TopicListIntent
 }
 
-sealed interface TopicSideEffect {
-
-}
+sealed interface TopicSideEffect

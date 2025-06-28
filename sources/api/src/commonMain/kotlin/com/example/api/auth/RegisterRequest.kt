@@ -9,4 +9,4 @@ data class RegisterRequest(
     val email: String,
     val phone: String,
     val fullName: String,
-);
+)

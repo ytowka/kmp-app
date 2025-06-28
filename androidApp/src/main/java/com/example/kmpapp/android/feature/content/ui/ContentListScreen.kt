@@ -62,31 +62,6 @@ fun ContentListScreen(
             contentPadding = PaddingValues(horizontal = 10.dp, vertical = 10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            if(state.searchQuery.isEmpty()){
-                item {
-                    Column {
-                        Header(stringResource(R.string.recomend_to_you))
-                        if (state.recommendedContent.isEmpty()) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(20.dp)
-                                    .height(150.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.review_more_in_category_for_recomendations),
-                                )
-                            }
-                        } else {
-                            RecomendedContentList(
-                                items = state.recommendedContent,
-                                onClick = onContentClick,
-                            )
-                        }
-                    }
-                }
-            }
             item {
                 Header(stringResource(R.string.topic, state.topicName))
             }
@@ -114,6 +89,7 @@ fun ContentListItem(
         AsyncImage(
             modifier = Modifier
                 .wrapContentHeight()
+                .heightIn(min = 200.dp)
                 .fillMaxWidth(),
             model = contentModel.imageUrl,
             contentDescription = null,
@@ -136,19 +112,21 @@ fun ContentListItem(
             color = Color.White,
         )
 
-        Text(
-            modifier = Modifier
-                .padding(8.dp)
-                .background(color = MarkColors.getMarkColor(contentModel.avgMark ?: 0f), shape = CircleShape)
-                .padding(8.dp)
-                .align(Alignment.TopEnd),
-            text = com.example.kmpapp.android.feature.content.ui.ContentUtils.formatMark(contentModel.avgMark ?: 0f),
-            textAlign = TextAlign.Center,
-            style = TextStyle(
-                color = Color.White,
-                fontWeight = FontWeight.Black,
-            ),
-        )
+        contentModel.avgMark?.let { avgMark ->
+            Text(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .background(color = MarkColors.getMarkColor(avgMark), shape = CircleShape)
+                    .padding(8.dp)
+                    .align(Alignment.TopEnd),
+                text = ContentUtils.formatMark(avgMark),
+                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    color = Color.White,
+                    fontWeight = FontWeight.Black,
+                ),
+            )
+        }
     }
 
 }

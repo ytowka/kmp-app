@@ -42,6 +42,6 @@ object ViewModelProvider : KoinComponent {
     }
 
     fun getReviewEditorViewModel(contentId: Long): ReviewEditorViewModel {
-        return getKoin().get() { parametersOf(contentId) }
+        return getKoin().get { parametersOf(contentId) }
     }
 }

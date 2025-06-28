@@ -9,6 +9,4 @@ sealed interface ReviewListIntent {
     data class UpdatePagingState(val pagingState: PagingState<ReviewCard>) : ReviewListIntent
 }
 
-sealed interface ReviewListSideEffect {
-
-}
+sealed interface ReviewListSideEffect

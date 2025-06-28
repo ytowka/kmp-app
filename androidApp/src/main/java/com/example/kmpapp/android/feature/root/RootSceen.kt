@@ -146,9 +146,6 @@ private fun ColumnScope.NavContainer(
                 onTopicClick = {
                     navController.navigate(NavDestinations.TopicContent(it.id, it.name))
                 },
-                onContentClick = {
-                    navController.navigate(NavDestinations.ReviewList(it.id, it.name))
-                }
             )
         }
         composable(

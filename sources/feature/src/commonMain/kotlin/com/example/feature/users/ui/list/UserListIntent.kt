@@ -11,6 +11,4 @@ sealed interface UserListIntent {
     data class SetSearchList(val list: List<UserModel>) : UserListIntent
 }
 
-sealed interface UserListSideEffect {
-
-}
+sealed interface UserListSideEffect

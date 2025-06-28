@@ -8,6 +8,6 @@ object ContentUtils {
 
     fun formatMark(avg: Number): String =
         if(avg is Float){
-            com.example.kmpapp.android.feature.content.ui.ContentUtils.format.format(avg)
+            format.format(avg)
         }else avg.toString()
 }
